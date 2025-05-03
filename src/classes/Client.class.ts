@@ -1,0 +1,58 @@
+import { ApplicationCommandType, Client, ClientOptions, Collection, PermissionResolvable, PermissionsBitField, REST, Routes } from "discord.js";
+import { Config, config } from "../config/config";
+import { Logger } from "./Logger.class";
+import fs from "fs";
+import path from "path";
+import { Command } from "./Command.class";
+import { Event } from "./Event.class";
+import CommandLoader from "../loaders/Command.loader";
+import EventLoader from "../loaders/Event.loader";
+import { MoonlinkClient } from "./MoonLink.class";
+
+export class BotClient extends Client {
+    commands: Collection<any, any>;
+    aliases: Collection<any, any>;
+    cooldown: Collection<any, any>;
+    config: Config;
+    logger: Logger;
+    body: any[];
+    manager: MoonlinkClient;
+
+    constructor(options: ClientOptions){
+        super(options);
+        this.commands = new Collection();
+        this.aliases = new Collection();
+        this.cooldown = new Collection();
+        this.config = config;
+        this.logger = new Logger();
+        this.body = [];
+        this.manager = new MoonlinkClient(this)
+    }
+
+    async startLogin(token: string){
+        this.logger.info(`Loading... commands!`);
+        new CommandLoader(this);
+        this.logger.info(`Loading... events!`);
+        new EventLoader(this);
+        this.regisCommand();
+        await this.login(token);
+    }
+
+
+    regisCommand(){
+        this.once("ready", async () => {
+            const applicationCommands = Routes.applicationCommands(config.bot.id);
+            try {
+                const rest = new REST({ version: "9" }).setToken(
+                    this.config.bot.token ?? ""
+                );
+                await rest.put(applicationCommands, { 
+                    body: this.body 
+                });
+                this.logger.info(`Successfully register slash commands!`);
+            } catch (error) {
+              this.logger.error(error);
+            }
+        });
+    }
+}
