@@ -1,4 +1,4 @@
-import { Client, Collection, Interaction, SlashCommandBuilder } from "discord.js";
+import { Client, Collection, Interaction, SlashCommandBuilder, StartThreadOptions } from "discord.js";
 
 export interface BotClient extends Client {
     commands?: Collection<any, any>;
@@ -7,7 +7,7 @@ export interface BotClient extends Client {
 export interface CommandConfig {
     config: {
         builder: SlashCommandBuilder;
-        permission: 
+        permission: string;
     }
     callback: (params: string) => Promise<any>
 }
