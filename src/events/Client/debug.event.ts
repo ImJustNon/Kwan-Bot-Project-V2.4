@@ -1,14 +1,16 @@
 import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
+import { config } from "../../config/config";
 
 export default class Debug extends Event {
     constructor(client: BotClient, file: string) {
         super(client, file, {
-            name: "debug"
+            name: "debug",
+            type: "client"
         });
     }
 
     async callback(message: string) {
-        this.client.logger.debug(message);
+        if(config.logs.debug) this.client.logger.debug(message);
     }
 }

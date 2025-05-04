@@ -12,7 +12,7 @@ export default class Help extends Command {
         examples: ["help"],
         usage: "help",
       },
-      category: "info",
+      category: "Info",
       cooldown: 3,
       permissions: {
         dev: false,

@@ -6,7 +6,8 @@ import { Command } from "../../classes/Command.class";
 export default class InteractionCreate extends Event {
     constructor(client: BotClient, file: string) {
         super(client, file, {
-            name: "interactionCreate"
+            name: "interactionCreate",
+            type: "client"
         });
     }
 

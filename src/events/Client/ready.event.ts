@@ -5,66 +5,49 @@ import { config } from "../../config/config";
 
 
 export default class Ready extends Event {
-  constructor(client: BotClient, file: string) {
-    super(client, file, {
-      name: "ready",
-    });
-  }
+	constructor(client: BotClient, file: string) {
+		super(client, file, {
+			name: "ready",
+			type: "client"
+		});
+	}
 
-  async callback() {
-    this.client.logger.success(`${this.client.user?.tag} is ready!`);
-    
-    // Change presence fuctions
-    this.presence1();
-    setInterval(() => {
-        this.presence1();
-        setInterval(() =>{
-            this.presence2();
-        }, 5 * 1000);
-    }, 5 * 1000);
-  }
+	async callback() {
+		this.client.logger.success(`${this.client.user?.tag} is ready!`);
 
-  async presence1(){
-    try {
-      this.client.user?.setPresence({
-          activities: [{
-              name: `/help | ${this.client.guilds.cache.size} เซิฟเวอร์`,
-              type: ActivityType.Streaming,
-              url: "https://www.twitch.tv/im_just_non",
-          }],
-          status: PresenceUpdateStatus.Online,
-      });
-    } catch (e) {
-      this.client.user?.setPresence({
-          activities: [{
-              name: `/help | ${this.client.guilds.cache.size} เซิฟเวอร์`,
-              type: ActivityType.Streaming,
-              url: "https://www.twitch.tv/im_just_non",
-          }],
-          status: PresenceUpdateStatus.Online,
-      });
-    }
-  }
+		await this.changePresence();
+	}
 
-  async presence2(){
-    try {
-      this.client.user?.setPresence({
-          activities: [{
-              name: `V.2.4.0 | Coming Soon...`,
-              type: ActivityType.Streaming,
-              url: "https://www.twitch.tv/im_just_non",
-          }],
-          status: PresenceUpdateStatus.Online
-      });
-    } catch (e) {
-        this.client.user?.setPresence({
-            activities: [{
-                name: `V.2.4.0 | Coming Soon...`,
-                type: ActivityType.Streaming,
-                url: "https://www.twitch.tv/im_just_non",
-            }],
-            status: PresenceUpdateStatus.Online
-        });
-    }
-  }
+
+	async changePresence(){
+		let index: number = 0;
+
+		setInterval(async() => {
+			if(index >= config.bot.presences.length) index = 0;
+			await this.setPresence(index);
+			index++;
+		}, 5000);
+	}
+
+	async setPresence(index: number) {
+		try {
+			this.client.user?.setPresence({
+				activities: [{
+					...config.bot.presences[index],
+					name: (config.bot.presences[index].name).replace("%guild_size%", String(this.client.guilds.cache.size)),
+				}],
+				status: PresenceUpdateStatus.Online,
+			});
+		} catch (e) {
+			this.client.user?.setPresence({
+				activities: [{
+					...config.bot.presences[index],
+					name: (config.bot.presences[index].name).replace("%guild_size%", String(this.client.guilds.cache.size)),
+				}],
+				status: PresenceUpdateStatus.Online,
+			});
+		}
+	}
+
+
 };

@@ -8,6 +8,8 @@ import { Event } from "./Event.class";
 import CommandLoader from "../loaders/Command.loader";
 import EventLoader from "../loaders/Event.loader";
 import { MoonlinkClient } from "./MoonLink.class";
+import { PrismaClient } from "../../generated/prisma";
+import FeatureLoader from "../loaders/Feature.loader";
 
 export class BotClient extends Client {
     commands: Collection<any, any>;
@@ -17,6 +19,7 @@ export class BotClient extends Client {
     logger: Logger;
     body: any[];
     manager: MoonlinkClient;
+    prisma: PrismaClient;
 
     constructor(options: ClientOptions){
         super(options);
@@ -27,6 +30,7 @@ export class BotClient extends Client {
         this.logger = new Logger();
         this.body = [];
         this.manager = new MoonlinkClient(this)
+        this.prisma = new PrismaClient();
     }
 
     async startLogin(token: string){
@@ -34,6 +38,8 @@ export class BotClient extends Client {
         new CommandLoader(this);
         this.logger.info(`Loading... events!`);
         new EventLoader(this);
+        this.logger.info(`Loading... Features`);
+        new FeatureLoader(this);
         this.regisCommand();
         await this.login(token);
     }

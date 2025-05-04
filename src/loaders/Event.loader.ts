@@ -13,21 +13,21 @@ export default class EventLoader {
             try {
                 const events = fs.readdirSync(path.join(__dirname, `../events/${dir}`)).filter((file) => file.includes(".event"));
                 events.forEach((file) => {
-                try {
-                    import(path.join(__dirname, `../events/${dir}/${file}`)).then(async(fileData) =>{
-                        const evt: Event = new fileData.default(client, file);
+                    try {
+                        import(path.join(__dirname, `../events/${dir}/${file}`)).then(async(fileData) =>{
+                            const evt: Event = new fileData.default(client, file);
 
-                        if(dir === "Player"){
-                            client.manager.on(evt.name as keyof IEvents, (...args: any) => evt.callback(...args));
-                        }
-                        else if (dir === "Client"){
-                            client.on(evt.name as keyof ClientEvents, (...args: any) => evt.callback(...args));
-                        }
-                        client.logger.success(`Loaded Event | ${evt.name}`);
-                    });
-                } catch (error) {
-                    console.error(`Error loading event ${file}:`, error);
-                }
+                            if(evt.type === "player"){
+                                client.manager.on(evt.name as keyof IEvents, (...args: any) => evt.callback(...args));
+                            }
+                            else if (evt.type === "client"){
+                                client.on(evt.name as keyof ClientEvents, (...args: any) => evt.callback(...args));
+                            }
+                            client.logger.success(`Loaded Event | ${evt.name}`);
+                        });
+                    } catch (error) {
+                        client.logger.error(`Error loading event ${file}:`, error);
+                    }
                 });
             } catch (error) {
                 console.error(`Error reading directory ${dir}:`, error);

@@ -41,5 +41,8 @@
     "displayLabel": true,
     "displayTimestamp": true,
     "underlineLabel": true
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }

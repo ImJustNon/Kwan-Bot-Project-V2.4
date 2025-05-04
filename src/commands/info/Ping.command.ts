@@ -12,7 +12,7 @@ export default class Ping extends Command {
                 examples: ["ping"],
                 usage: "ping",
             },
-            category: "info",
+            category: "Info",
             cooldown: 3,
             permissions: {
                 dev: false,

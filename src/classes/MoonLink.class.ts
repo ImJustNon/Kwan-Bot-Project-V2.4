@@ -20,14 +20,15 @@ export class MoonlinkClient extends Manager {
                     path: "moonlink.log",
                 },
                 partialTrack: ["url", "duration", "artworkUrl", "sourceName", "identifier"],
-            }
+            },
         });
 
         client.on("ready", () => {
             this.init(client.user!.id);
         });
-        this.on("nodeReady", (node: INode, stats: INodeStats) => {
-            client.logger.success(`Node ${node.identifier} is ready!`); 
+
+        client.on("raw", (packet: any) => {
+            client.manager.packetUpdate(packet);
         });
     }
 }
