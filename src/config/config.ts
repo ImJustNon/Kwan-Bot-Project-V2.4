@@ -1,6 +1,7 @@
 import { ActivitiesOptions, ActivityType, PresenceStatus, PresenceStatusData } from "discord.js";
 import dotenv from "dotenv";
 import { INode } from "moonlink.js";
+import { assets, AssetsConfig } from "./assets.config";
 dotenv.config();
 
 export type Config = {
@@ -14,11 +15,10 @@ export type Config = {
         debug: boolean;
     };
     command: {
-        prefix: string;
     };
     owners: string[];
     nodes: INode[];
-    assets: any
+    assets: AssetsConfig
 }
 
 export const config: Config = {
@@ -48,7 +48,6 @@ export const config: Config = {
         debug: false,
     },
     command: {
-        prefix: "!"
     },
     owners: [],
     nodes: [
@@ -61,10 +60,6 @@ export const config: Config = {
         }
     ],
     assets: {
-        musicChannel: {
-            bannerUrl: "https://cdn.discordapp.com/attachments/887363452304261140/964713073527099392/standard_4.gif?ex=665b2f50&is=6659ddd0&hm=b9f715b410612b4aac080989b99a01867fd5a46ac001fd6da67792e9271592f8&",
-            defaultUrl: "https://cdn.discordapp.com/attachments/887363452304261140/964737487383711764/standard_7.gif?ex=665b460c&is=6659f48c&hm=ac22a8fc9f43f1f3a6c5a334d8badf877b01b5349dc0820df1a4e6548f9017c8&",
-            defaultColor: "White"
-        }
+        ...assets
     }
 }

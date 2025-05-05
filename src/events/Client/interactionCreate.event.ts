@@ -14,7 +14,7 @@ export default class InteractionCreate extends Event {
     async callback(interaction: Interaction): Promise<any>{
         if(interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand){
             const commandName = interaction.commandName;
-            const command: Command = this.client.commands.get(interaction.commandName);
+            const command: Command | undefined = this.client.commands.get(interaction.commandName);
             if(!command) return;
         
             if(!interaction.inGuild()) return;

@@ -10,7 +10,7 @@ export default class FeatureLoader {
         featurePath.forEach((dir: string) => {
             const featureFiles = fs.readdirSync(path.join(__dirname, `../features/${dir}`)).filter((fileName) => (dir === fileName.split(".")[0]) && fileName.includes(".feature"));
             try {
-                import(path.join(__dirname, `../features/${featurePath}/${featureFiles[0]}`)).then(async(data) => {
+                import(path.join(__dirname, `../features/${dir}/${featureFiles[0]}`)).then(async(data) => {
                     const feat: Feature = new data.default(this, featureFiles[0]);
                     feat.callback(client);
 

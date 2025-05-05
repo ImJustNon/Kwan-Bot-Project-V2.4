@@ -49,7 +49,7 @@ export default class MusicChannelWebhook {
     async sendThenDelete(options: WebhookMessageCreateOptions){
         await this.webhookClient.send(options).then((msg) => {
             setTimeout(async(): Promise<void> =>{
-                await this.webhookClient.deleteMessage(msg.id);
+                await this.webhookClient.deleteMessage(msg.id).catch(() => {});
             }, 5000);
         }).catch(() => {});
     }

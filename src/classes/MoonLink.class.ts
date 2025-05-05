@@ -12,7 +12,6 @@ export class MoonlinkClient extends Manager {
                 if (guild) guild.shard.send(JSON.parse(payload));
             },
             options: {
-                clientName: "Kwan's 2",
                 NodeLinkFeatures: true,
                 previousInArray: true,
                 logFile: {

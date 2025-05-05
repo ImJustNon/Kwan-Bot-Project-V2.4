@@ -43,27 +43,18 @@ export default class MessageCreate {
             const queueContent: Message = await textChannel.messages.fetch(findMusicChannel.content_queue_id);
             const trackContent: Message = await textChannel.messages.fetch(findMusicChannel.content_playing_id);
             const memberVoiceChannel: VoiceBasedChannel | null | undefined = message.member?.voice.channel;
+
+            // Login webhook
+            const webhook: MusicChannelWebhook = new MusicChannelWebhook(findMusicChannel.webhook_id, findMusicChannel.webhook_token);
     
             if(!trackContent || !queueContent || !bannerContent){
-                return await message.channel.send('🔴 | โครงสร้างข้อความในช่องนี้ เกิดข้อผิดพลาด').then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                return await webhook.sendThenDelete({content: '🔴 | โครงสร้างข้อความในช่องนี้ เกิดข้อผิดพลาด'});
             } 
             if(!memberVoiceChannel){  
-                return await message.channel.send('🟡 | โปรดเข้าช่องเสียงก่อนเปิดเพลงน่ะ').then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                return await webhook.sendThenDelete({content: '🟡 | โปรดเข้าช่องเสียงก่อนเปิดเพลงน่ะ'});
             }
             if(message.guild.members.me?.voice.channel && !memberVoiceChannel.equals(message.guild.members.me.voice.channel)){
-                return await message.channel.send('🟡 | เอ๊ะ! ดูเหมือนว่าคุณจะไม่ได้อยู่ในช่องเสียงเดียวกันน่ะ').then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                return await webhook.sendThenDelete({content: '🟡 | เอ๊ะ! ดูเหมือนว่าคุณจะไม่ได้อยู่ในช่องเสียงเดียวกันน่ะ'});
             }
     
             // check for player. if player doesnot exit it will create one
@@ -86,18 +77,10 @@ export default class MessageCreate {
     
             // load error or cannot find result
             if (result.loadType === "error") {
-                return await message.channel.send(`🔴 | ไม่สามารถค้นหาได้`).then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                return await webhook.sendThenDelete({content: '🔴 | ไม่สามารถค้นหาได้'});
             } 
             else if (result.loadType === "empty") {
-                return await message.channel.send(`🟡 | ไม่พบผลการค้นหาสำหรับ ${messageContent}`).then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                return await webhook.sendThenDelete({content: `🟡 | ไม่พบผลการค้นหาสำหรับ ${messageContent}`});
             }
     
             // load type switch
@@ -105,26 +88,18 @@ export default class MessageCreate {
                 for(let track of result.tracks){
                     player.queue.add(track);
                 }
-                await message.channel.send(`🟢 | เพิ่ม \`${result.tracks.length}\` รายการ จาก Playlist: \`${result.playlistInfo.name}\` เรียบร้อยเเล้ว`).then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                await webhook.sendThenDelete({content: `🟢 | เพิ่ม \`${result.tracks.length}\` รายการ จาก Playlist: \`${result.playlistInfo.name}\` เรียบร้อยเเล้ว`});
             }
             else { // for one song
                 player.queue.add(result.tracks[0]);
-                await message.channel.send(`🟢 | เพิ่ม \`${result.tracks[0].title}\` เรียบร้อยเเล้ว`).then((msg: Message) =>{
-                    setTimeout(async(): Promise<void> =>{
-                        await msg.delete();
-                    }, 5000);
-                });
+                await webhook.sendThenDelete({content: `🟢 | เพิ่ม \`${result.tracks[0].title}\` เรียบร้อยเเล้ว`});
             }
     
             if(!player.playing && !player.paused){
                 await player.play();
             }
     
-            await new MusicChannelWebhook(findMusicChannel.webhook_id, findMusicChannel.webhook_token).editQueueTrack(client, player, findMusicChannel.content_queue_id);
+            await webhook.editQueueTrack(client, player, findMusicChannel.content_queue_id);
         });
     }
 }

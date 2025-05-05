@@ -18,6 +18,7 @@ export default class TrackStart extends Event {
         const channel: TextChannel = this.client.channels.cache.get(player.textChannelId) as TextChannel;
         const voice: VoiceChannel = this.client.channels.cache.get(player.voiceChannelId) as VoiceChannel; 
 
+
         const findMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
             where: {
                 guild_id: player.guildId,
@@ -33,7 +34,6 @@ export default class TrackStart extends Event {
         });
 
         if(findMusicChannel){
-
             const webhook: MusicChannelWebhook = new MusicChannelWebhook(findMusicChannel.webhook_id, findMusicChannel.webhook_token);
             await webhook.editQueueTrack(this.client, player, findMusicChannel.content_queue_id);
             await webhook.editEmbedTrack(this.client, player, findMusicChannel.content_playing_id);
@@ -73,5 +73,9 @@ export default class TrackStart extends Event {
                 ],
             });
         }
+
     }
 }
+
+
+

@@ -12,7 +12,7 @@ import { PrismaClient } from "../../generated/prisma";
 import FeatureLoader from "../loaders/Feature.loader";
 
 export class BotClient extends Client {
-    commands: Collection<any, any>;
+    commands: Collection<string, Command>;
     aliases: Collection<any, any>;
     cooldown: Collection<any, any>;
     config: Config;
