@@ -61,12 +61,12 @@ export default class Help extends Command {
 					},
 					{
 						name: '💌 | Web',
-						value: `[Web Dashboard](https://erika-beta.nonlnwza.xyz)`,
+						value: `[Web Dashboard](https://kwans2.nonlnwza.xyz)`,
 						inline: true,
 					},
 					{
 						name: '💞 | Credits',
-						value: `[Nonlnwza.xyz](https://bio.nonlnwza.xyz)`,
+						value: `[N_O_N_T](https://profile.imnon.xyz)`,
 						inline: true,
 					}
 				]

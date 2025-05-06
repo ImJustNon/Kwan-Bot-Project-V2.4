@@ -1,6 +1,6 @@
 import { Player } from "moonlink.js";
 import { BotClient } from "../classes/Client.class"
-import ConvertTime from "./convertTime.util";
+import ConvertTime from "./ConvertTime.util";
 import { config } from "../config/config";
 import { EmbedBuilder } from "discord.js";
 

@@ -13,33 +13,41 @@ export default class InteractionCreate extends Event {
 
     async callback(interaction: Interaction): Promise<any>{
         if(interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand){
+            
+            // get and validate command by command name
             const commandName = interaction.commandName;
             const command: Command | undefined = this.client.commands.get(interaction.commandName);
             if(!command) return;
         
+            // if not in guild then return
             if(!interaction.inGuild()) return;
+            
+            // if me is not in guild then return
             const me = interaction.guild?.members.me;
             if(!me) return;
+
+            // get current channel and data check basic permission
             const channel = interaction.channel;
             if(!channel?.permissionsFor(me)?.has(PermissionFlagsBits.SendMessages)) return;
-        
+            // if basic permission not found then return
             if(!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.SendMessages)){
                 return await interaction.reply({
-                    content: `I don't have **\`SendMessage\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
+                    content: `🔴 | รู้สึกว่าจะไม่ได้ให้สิทธิ **\`SendMessage\`** ใน \`${interaction.guild.name}\`\n ช่อง: <#${interaction.channelId}> นะ`,
                 }).catch(() => {});
             }
-
+            // for check basic send message permission
             if(!interaction.guild.members.me.permissions.has(PermissionFlagsBits.EmbedLinks)){
                 return await interaction.reply({
-                    content: "I don't have **`EmbedLinks`** permission."
+                    content: "🔴 | รู้สึกว่าจะไม่ได้ให้สิทธิ **`EmbedLinks`** นะ"
                 }).catch(() => {});
             }
 
+            // advance permission check
             if(command.permissions){
                 if(command.permissions.client){
                     if(!interaction.guild.members.me.permissions.has(command.permissions.client)){
                         return await interaction.reply({
-                            content: "I don't have enough permissions to execute this command."
+                            content: "🔴 | ดูเหมือนว่าจะไม่มีสิทธิ ตรงตามที่ต้องการ สำหรับใช้คำสั่งนี้นะฟ"
                         }).catch(() => {});
                     }
                 }
@@ -48,7 +56,7 @@ export default class InteractionCreate extends Event {
                     const member = interaction.member as GuildMember;
                     if (!member.permissions.has(command.permissions.user)) {
                         return await interaction.reply({
-                            content: "You don't have enough permissions to use this command.",
+                            content: "🔴 | You don't have enough permissions to use this command.",
                             ephemeral: true
                         }).catch(() => {});
                     } 

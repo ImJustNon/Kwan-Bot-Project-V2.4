@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, CommandInteraction, Guild, GuildChannel, 
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { SearchResult, Track } from "moonlink.js";
+import ReplyEmbed from "../../utils/ReplyEmbed.util";
 
 
 export default class Play extends Command {
@@ -56,13 +57,13 @@ export default class Play extends Command {
         const me = guild.members.cache.get(client.user?.id ?? "") as GuildMember;
 
         if(!channel){
-            return interaction.reply('⚠ | โปรดเข้าห้องเสียงก่อนใช้คำสั่งน่ะ');
+            return await interaction.reply(new ReplyEmbed().warn("โปรดเข้าห้องเสียงก่อนใช้คำสั่งน่ะ"));
         }
         if(me.voice.channel && !channel.equals(me.voice.channel)){
-            return interaction.reply('⚠ | ดูเหมือนว่าคุณจะไม่ได้อยู่ช่องเสียงเดียวกันน่ะ');
+            return await interaction.reply(new ReplyEmbed().warn("ดูเหมือนว่าคุณจะไม่ได้อยู่ช่องเสียงเดียวกันน่ะ"));
         } 
         if(!query){
-            return interaction.reply('⚠ | โปรดระบุเพลงที่ต้องการด้วยน่ะ');
+            return await interaction.reply(new ReplyEmbed().warn("โปรดระบุเพลงที่ต้องการด้วยน่ะ"));
         } 
 
         let player = client.manager.players.get(guild.id) || client.manager.createPlayer({
@@ -74,26 +75,24 @@ export default class Play extends Command {
         if (!player.connected) player.connect({ setDeaf: true });
 
         const searchResult: SearchResult = await client.manager.search({ 
-          query: query, 
-        //   source: source ?? "ytsearch",
-          requester: interaction.user.id 
+            query: query, 
+            // source: source ?? "ytsearch",
+            requester: interaction.user.id 
         });
 
         if (!searchResult.tracks.length) {
-            return await interaction.reply({
-                content: "Not Found"
-            });
+            return await interaction.reply(new ReplyEmbed().error(`ไม่พบผลการค้นหาสำหรับ ${query}`));
         }
         if (searchResult.loadType == "playlist") {  
             for (const track of searchResult.tracks) {
                 player.queue.add(track);
             }
-            await interaction.reply(`${searchResult.playlistInfo.name} has been loaded with ${searchResult.tracks.length}`);
+            await interaction.reply(new ReplyEmbed().success(`${searchResult.playlistInfo.name} has been loaded with ${searchResult.tracks.length}`));
         } else {
             const track: Track = searchResult.tracks[0];
             track.requestedBy = interaction.user;
             player.queue.add(track);
-            await interaction.reply(`Queued Track \n \`${track.title}\``);
+            await interaction.reply(new ReplyEmbed().success(`Queued Track \n \`${track.title}\``));
         }
 
         if (!player.playing) {

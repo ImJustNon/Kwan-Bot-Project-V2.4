@@ -3,8 +3,9 @@ import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
 import { EmbedBuilder, Message, TextChannel, VoiceChannel } from "discord.js";
 import MusicChannelMessage from "../../utils/MusicChannelMessage.util";
-import ConvertTime from "../../utils/convertTime.util";
+import ConvertTime from "../../utils/ConvertTime.util";
 import MusicChannelWebhook from "../../utils/MusicChannelWebhook.util";
+import { config } from "../../config/config";
 
 export default class TrackStart extends Event {
     constructor(client: BotClient, file: string) {
@@ -42,7 +43,7 @@ export default class TrackStart extends Event {
             await channel.send({
                 embeds: [
                     new EmbedBuilder()
-                    .setColor("Random")
+                    .setColor(config.assets.embed.default.color)
                     .setThumbnail(track.artworkUrl ?? null)
                     .addFields(
                         [
@@ -63,7 +64,7 @@ export default class TrackStart extends Event {
                             },
                             {
                                 name: `📥 | ขอเพลงโดย`,
-                                value: `${track.requestedBy?.toString}`, 
+                                value: `<@${JSON.parse(JSON.stringify(player.current.requestedBy))?.id}>`, 
                                 inline: true,
                             },
                         ],

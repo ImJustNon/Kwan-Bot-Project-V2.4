@@ -3,7 +3,7 @@ import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
 import { EmbedBuilder, Message, TextChannel, VoiceChannel } from "discord.js";
 import MusicChannelMessage from "../../utils/MusicChannelMessage.util";
-import ConvertTime from "../../utils/convertTime.util";
+import ConvertTime from "../../utils/ConvertTime.util";
 import MusicChannelDefaultMessage from "../../utils/MusicChannelDefaultMessage.util";
 import MusicChannelWebhook from "../../utils/MusicChannelWebhook.util";
 
