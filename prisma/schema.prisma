@@ -21,3 +21,11 @@ model GuildMusicChannel {
 	create_at             	DateTime  	@default(now())
 	update_at             	DateTime  	@updatedAt
 }
+
+model GuildAutoVoiceChannel {
+	guild_id				String		 
+	channel_id				String		@id
+	creator_user_id			String		
+	created_at				DateTime	@default(now())
+	updated_at				DateTime	@updatedAt
+}

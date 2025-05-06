@@ -42,7 +42,7 @@ export default class Help extends Command {
             menuOptionArray.push({
                 label: `  |  ${cmdCategories[i].toUpperCase()}`,
                 value: cmdCategories[i],
-				emoji: {name: config.assets.categoryEmoji[cmdCategories[i].toLowerCase()]}
+				emoji: {name: config.assets.categoryEmoji[cmdCategories[i].toLowerCase()] ?? "❔"}
             });
         }
 
