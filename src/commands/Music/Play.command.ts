@@ -27,6 +27,7 @@ export default class Play extends Command {
                     description: 'พิมพ์สิ้งที่ต้องการค้นหา หรือ ลิ้งค์',
                     type: 3,
                     required: true,
+                    autocomplete: true,
                 },
                 {
                     name: 'platform',

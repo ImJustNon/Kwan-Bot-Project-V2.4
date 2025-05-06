@@ -49,7 +49,7 @@ export const config: Config = {
     },
     command: {
     },
-    owners: [],
+    owners: ["708965153131200594"],
     nodes: [
         {
             identifier: "Main",

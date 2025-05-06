@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, CommandInteraction, EmbedBuilder, Guild, 
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
+import ReplyEmbed from "../../utils/ReplyEmbed.util";
 
 
 export default class Disconnect extends Command {
@@ -30,33 +31,20 @@ export default class Disconnect extends Command {
         const player = client.manager.players.get(guild.id);
         
         if (!player) {
-            return await interaction.reply({ 
-                content: `There is nothing playing in this server!`
-            });
+            return await interaction.reply(new ReplyEmbed().warn("ยังไม่มีการเล่นเพลง ณ ตอนนี้เลยน่ะ"));
         }
         
         const voiceChannel = channel;
         if (!voiceChannel) {
-            return await interaction.reply({ 
-                content: `You need to be in a voice channel to use this command!`
-            });
+            return await interaction.reply(new ReplyEmbed().warn("โปรดเข้าห้องเสียงก่อนใช้คำสั่งน่ะ"));
         }
         
         if (voiceChannel.id !== player.voiceChannelId) {
-            return await interaction.reply({
-                content: `You need to be in the same voice channel as the bot to use this command!`
-            });
+            return await interaction.reply(new ReplyEmbed().warn("ดูเหมือนว่าคุณจะไม่ได้อยู่ช่องเสียงเดียวกันน่ะ"));
         }
         
         player.queue.clear();
-        player.stop();
-        
-        const embed = new EmbedBuilder()
-            .setDescription(`Stopped the player and cleared the queue`)
-            .setColor("Green");
-        
-        await interaction.reply({ 
-            embeds: [embed] 
-        });
+        player.stop();        
+        await interaction.reply(new ReplyEmbed().success("ทำการปิดเพลงเรียบร้อยเเล้ว"));
     }
 };
