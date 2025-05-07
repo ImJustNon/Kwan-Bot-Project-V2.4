@@ -6,3 +6,5 @@ generated/prisma/
 moonlink.log
 
 build
+
+.DS_Store
