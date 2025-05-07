@@ -18,8 +18,8 @@ export default class AutoVoiceChannelAdd extends Command {
             cooldown: 3,
             permissions: {
                 dev: false,
-                client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-                user: [],
+                client: ["SendMessages", "ViewChannel", "EmbedLinks", "ManageChannels", "MoveMembers"],
+                user: ["Administrator"],
             },
             options: [],
         });

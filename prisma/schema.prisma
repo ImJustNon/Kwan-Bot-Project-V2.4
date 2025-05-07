@@ -29,3 +29,12 @@ model GuildAutoVoiceChannel {
 	created_at				DateTime	@default(now())
 	updated_at				DateTime	@updatedAt
 }
+
+model CacheAutoVoiceChannel {
+	guild_id      			String   	
+	channel_id    			String    	@id
+	parent_id     			String
+	creator_user_id     	String	
+	create_at     			DateTime  	@default(now())
+	update_at     			DateTime  	@updatedAt
+}

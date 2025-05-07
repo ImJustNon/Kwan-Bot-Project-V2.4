@@ -18,8 +18,8 @@ export default class AutoVoiceChannelAdd extends Command {
             cooldown: 3,
             permissions: {
                 dev: false,
-                client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-                user: [],
+                client: ["SendMessages", "ViewChannel", "EmbedLinks", "ManageChannels", "MoveMembers"],
+                user: ["Administrator"],
             },
             options: [
                 {
@@ -53,7 +53,7 @@ export default class AutoVoiceChannelAdd extends Command {
                     guild_id: guild.id
                 }
             });
-            if(findVoiceChannel.filter(vc => vc.channel_id === voiceChannel.id)){
+            if(findVoiceChannel.filter(vc => vc.channel_id === voiceChannel.id).length !== 0){
                 return await interaction.reply(new ReplyEmbed().warn(`ช่อง <#${voiceChannel.id}> ได้ถูกตั้งค่าเอาไว้เเล้วน่ะ`)); 
             }
 
