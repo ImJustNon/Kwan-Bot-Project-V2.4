@@ -47,3 +47,11 @@ model GuildDisabledCommand {
 	created_at				DateTime	@default(now())
 	updated_at				DateTime	@updatedAt
 }
+
+model GuildCommandChannel {
+	guild_id				String		@id
+	channel_id				String		@unique
+	creator_user_id			String
+	created_at				DateTime	@default(now())
+	updated_at				DateTime	@updatedAt
+}

@@ -1,4 +1,4 @@
-import { Collection, CommandInteraction, GuildMember, Interaction, InteractionType, PermissionFlagsBits } from "discord.js";
+import { Collection, CommandInteraction, GuildMember, Interaction, InteractionType, MessageFlags, PermissionFlagsBits } from "discord.js";
 import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
 import { Command } from "../../classes/Command.class";
@@ -40,6 +40,19 @@ export default class InteractionCreate extends Event {
                     return await interaction.reply(new ReplyEmbed().error(`รู้สึกว่าจะไม่ได้ให้สิทธิ **\`EmbedLinks\`** นะคะ`)).catch(() => {});
                 }
 
+
+                // guild command channel check
+                const findGuildCommandChannel = await this.client.prisma.guildCommandChannel.findUnique({
+                    where: {
+                        guild_id: interaction.guild.id
+                    },
+                    select: {
+                        channel_id: true
+                    }
+                });
+                if(findGuildCommandChannel && findGuildCommandChannel.channel_id !== interaction.channelId) return await interaction.reply({...new ReplyEmbed().warn(`โปรดใช้คำสั่งในช่อง <#${findGuildCommandChannel.channel_id}> เท่านั้นนะคะ`), flags: MessageFlags.Ephemeral});
+
+
                 // guild disable command check
                 const findGuildDisabledCommand = await this.client.prisma.guildDisabledCommand.findMany({
                     where: {
@@ -51,6 +64,7 @@ export default class InteractionCreate extends Event {
                     }
                 });
                 if(findGuildDisabledCommand.length !== 0) return await interaction.reply(new ReplyEmbed().warn(`คำสั่งนี้ได้ถูกปิดใช้งานโดย <@${findGuildDisabledCommand[0].creator_user_id}>`));
+
 
                 // advance permission check
                 if(command.permissions){
@@ -110,7 +124,7 @@ export default class InteractionCreate extends Event {
             }
         }
         else if(interaction.type == InteractionType.ApplicationCommandAutocomplete){
-            if (interaction.commandName == "disabled-command" || interaction.commandName == "enabled-command") {  
+            if (interaction.commandName == "command-disable" || interaction.commandName == "command-enable") {  
                 const search = interaction.options.getString("command-name");
                 const commandChoices: {name: string, value: string}[] = this.client.commands.filter(c => search && search.length > 0 ? c.name.includes(search) : true).map(c => ({ name: c.name, value: c.name }));
                 return await interaction.respond(commandChoices.slice(0, 25)).catch(() => { });
