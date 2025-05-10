@@ -22,7 +22,8 @@ export const assets: AssetsConfig = {
         "music": "🎵",
         "musicchannel": "🎤",
         "autovoicechannel": "🎙️",
-        "config": "⚙️"
+        "config": "⚙️",
+        "autoroles": "🎭"
     },
     musicChannel: {
         bannerUrl: "https://cdn.discordapp.com/attachments/887363452304261140/964713073527099392/standard_4.gif?ex=665b2f50&is=6659ddd0&hm=b9f715b410612b4aac080989b99a01867fd5a46ac001fd6da67792e9271592f8&",

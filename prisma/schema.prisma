@@ -55,3 +55,11 @@ model GuildCommandChannel {
 	created_at				DateTime	@default(now())
 	updated_at				DateTime	@updatedAt
 }
+
+model GuildAutoRoles {
+	guild_id				String		
+	role_id					String		@id
+	creator_user_id			String
+	created_at				DateTime	@default(now())
+	updated_at				DateTime	@updatedAt
+}

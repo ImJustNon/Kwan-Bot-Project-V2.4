@@ -5,20 +5,20 @@ import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
 
-export default class AutoVoiceChannelAdd extends Command {
+export default class AutoRolesAdd extends Command {
     constructor(client: BotClient) {
         super(client, {
-            name: "autovc-list",
+            name: "autoroles-list",
             description: {
-                content: "List all setup voicchannel",
-                examples: ["help"],
-                usage: "help",
+                content: "List all role of Auto Roles",
+                examples: [""],
+                usage: "",
             },
-            category: "AutoVoiceChannel",
+            category: "AutoRoles",
             cooldown: 3,
             permissions: {
                 dev: false,
-                client: ["SendMessages", "ViewChannel", "EmbedLinks", "ManageChannels", "MoveMembers"],
+                client: ["SendMessages", "ViewChannel", "EmbedLinks", "ManageRoles"],
                 user: ["Administrator"],
             },
             options: [],
@@ -26,32 +26,33 @@ export default class AutoVoiceChannelAdd extends Command {
     }
     async callback(client: BotClient, interaction: ChatInputCommandInteraction): Promise<any>{
         const guild: Guild | undefined = client.guilds.cache.get(interaction.guildId || "");
-
+        
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
+            const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
                 where: {
                     guild_id: guild.id
+                },
+                select: {
+                    role_id: true,
+                    creator_user_id: true
                 }
             });
 
-            if(findVoiceChannel.length === 0) return await interaction.reply(new ReplyEmbed().warn("ไม่พบข้อมูลการตั้งค่า ช่องเสียงอัตโนมัติ ในเซืฟเวอร์นี้"));
+            if(findAutoRoles.length === 0) return await interaction.reply(new ReplyEmbed().warn('ไม่พบการตั้งค่า Auto Roles ใน Guild นี้นะตะ'));
 
-
-            let embed = new EmbedBuilder().setColor(config.assets.embed.default.color).setTitle("⚙ | รายการช่องที่ตั้งค่าทั้งหมด").setFooter({text: client.user?.username ?? ""}).setTimestamp();
-            findVoiceChannel.forEach(async vc =>{
-                const date = new Date(vc.created_at);
-                const dateFormat = date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+            const embed: EmbedBuilder = new EmbedBuilder().setColor(config.assets.embed.default.color).setTitle(`⚙️ | รายการยศที่ตั้งค่าเป็นยศอัตโนมัติ`).setFooter({text: client.user?.username ?? ""}).setTimestamp();
+            for(const role of findAutoRoles){
                 embed.addFields({
-                    name: `🔊 | <#${vc.channel_id}> `,
-                    value: `🔧 | <@${vc.creator_user_id}> \n ⌛ | \`${dateFormat}\``,
-                    inline: true,
+                    name: `ยศ : <@&${role.role_id}>`,
+                    value: `ตั้งค่าโดย : <@${role.creator_user_id}>`,
+                    inline: true
                 });
-            });
-
-            return interaction.reply({
-                embeds: [embed],
+            }
+            
+            await interaction.reply({ 
+                embeds: [ embed ],
             });
         }
         catch(e){

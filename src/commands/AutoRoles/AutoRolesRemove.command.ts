@@ -8,9 +8,9 @@ import ReplyEmbed from "../../utils/ReplyEmbed.util";
 export default class AutoRolesAdd extends Command {
     constructor(client: BotClient) {
         super(client, {
-            name: "autoroles-add",
+            name: "autoroles-remove",
             description: {
-                content: "Add Roles to new member when joined",
+                content: "Remove Role from Auto Role",
                 examples: [""],
                 usage: "",
             },
@@ -24,7 +24,7 @@ export default class AutoRolesAdd extends Command {
             options: [
                 {
                     name: "role",
-                    description: `เลือกยศที่ต้องการจะเพิ่ม`,
+                    description: `เลือกยศที่ต้องการจะนำออก`,
                     type: ApplicationCommandOptionType.Role,
                     required: true,
                 },
@@ -41,28 +41,27 @@ export default class AutoRolesAdd extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
+            const findAutoRoles = await client.prisma.guildAutoRoles.findUnique({
                 where: {
-                    guild_id: guild.id
+                    guild_id: guild.id,
+                    role_id: selectedRole.id
                 },
                 select: {
                     role_id: true
                 }
             });
 
-            if(findAutoRoles.filter(r => r.role_id === selectedRole.id).length !== 0) return await interaction.reply(new ReplyEmbed().warn("Role นี้ได้ถูกตั้งค่าเป็น Auto Role ไว้เเล้วนะคะ"));
+            if(!findAutoRoles) return await interaction.reply(new ReplyEmbed().warn("Role นี้ยังไม่ได้ถูกตั้งค่าเป็น Auto Role นะคะ"));
 
-            if(findAutoRoles.length >= 5) return await interaction.reply(new ReplyEmbed().warn(`สามารถตั้งค่าได้สูงสุด 5 ยศเท่านั้นนะคะ`));
 
-            await client.prisma.guildAutoRoles.create({
-                data: {
+            await client.prisma.guildAutoRoles.delete({
+                where: {
                     guild_id: guild.id,
-                    role_id: selectedRole.id,
-                    creator_user_id: member.id
+                    role_id: selectedRole.id
                 }
             });
 
-            await interaction.reply(new ReplyEmbed().success(`ทำการเพิ่มยศ <@&${selectedRole.id}> เรียบร้อยเล้วค่ะ`));
+            await interaction.reply(new ReplyEmbed().success(`ทำการนำยศ <@&${selectedRole.id}> ออกเรียบร้อยเล้วค่ะ`));
         }
         catch(e){
             return await interaction.reply(new ReplyEmbed().error("Internal Server Error"));
