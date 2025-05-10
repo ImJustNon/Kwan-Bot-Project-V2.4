@@ -71,6 +71,7 @@ export default class AutoVoiceChannelAdd extends Command {
             return await interaction.reply(new ReplyEmbed().success(`ทำการตั้งค่าช่อง <#${voiceChannel.id}> เป็นช่องเสียงอัตโนมัติเรียบร้อยเเล้ว`))
         }
         catch(e){
+            console.log(e);
             return interaction.reply(new ReplyEmbed().error("Internal Server Error"));
         }
 

@@ -12,6 +12,6 @@ export default class AutoVoiceChannel extends Feature {
 
     async callback(client: BotClient) {
         new VoiceStateUpdate(client);
-        new AutoVoiceChannelStartup(client);
+        // new AutoVoiceChannelStartup(client);
     }
 }

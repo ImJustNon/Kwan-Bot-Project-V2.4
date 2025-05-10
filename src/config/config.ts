@@ -51,20 +51,13 @@ export const config: Config = {
     },
     owners: ["708965153131200594"],
     nodes: [
-        // {
-        //     identifier: "Main",
-        //     host: "88.99.215.154",
-        //     port: 3012,
-        //     password: "discord.gg/W2GheK3F9m",
-        //     secure: false,
-        // }
         {
-                identifier: "Main",
-                host: "localhost",
-                port: 2333,
-                password: "youshallnotpass",
-                secure: false,
-            }
+            identifier: "Main",
+            host: "88.99.215.154",
+            port: 3012,
+            password: "discord.gg/W2GheK3F9m",
+            secure: false,
+        }
     ],
     assets: {
         ...assets
