@@ -13,6 +13,7 @@ export type AssetsConfig = {
             color: ColorResolvable;
         }
     }
+    rainbowLine1: string;
 }
 
 export const assets: AssetsConfig = {
@@ -35,5 +36,6 @@ export const assets: AssetsConfig = {
         default: {
             color: "White"
         }
-    }
+    },
+    rainbowLine1: 'https://cdn.discordapp.com/attachments/945631084861849600/945631169427423242/rainbow_line_1.gif',
 }

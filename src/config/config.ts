@@ -18,7 +18,11 @@ export type Config = {
     };
     owners: string[];
     nodes: INode[];
-    assets: AssetsConfig
+    assets: AssetsConfig;
+    informations: {
+        inviteLink: string;
+        supportLink: string;
+    }
 }
 
 export const config: Config = {
@@ -61,5 +65,9 @@ export const config: Config = {
     ],
     assets: {
         ...assets
+    },
+    informations: {
+        inviteLink: "https://kwans2.xyz/invite",
+        supportLink: "https://kwans2.xyz/support",
     }
 }
