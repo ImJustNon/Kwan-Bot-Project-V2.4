@@ -2,6 +2,7 @@ import { ActivitiesOptions, ActivityType, PresenceStatus, PresenceStatusData } f
 import dotenv from "dotenv";
 import { INode } from "moonlink.js";
 import { assets, AssetsConfig } from "./assets.config";
+import { ApiConfig, apiConfig } from "./api.config";
 dotenv.config();
 
 export type Config = {
@@ -22,7 +23,8 @@ export type Config = {
     informations: {
         inviteLink: string;
         supportLink: string;
-    }
+    };
+    api: ApiConfig;
 }
 
 export const config: Config = {
@@ -69,5 +71,8 @@ export const config: Config = {
     informations: {
         inviteLink: "https://kwans2.xyz/invite",
         supportLink: "https://kwans2.xyz/support",
+    },
+    api: {
+        ...apiConfig
     }
 }
