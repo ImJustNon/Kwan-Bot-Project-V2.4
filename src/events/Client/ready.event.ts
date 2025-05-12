@@ -13,7 +13,7 @@ export default class Ready extends Event {
 	}
 
 	async callback() {
-		this.client.logger.success(`${this.client.user?.tag} is ready!`);
+		this.client.logger.info(`${this.client.user?.tag} is ready!`);
 
 		await this.changePresence();
 	}

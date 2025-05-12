@@ -10,7 +10,8 @@ export default class NodeReady extends Event {
         });
     }
 
+    
     async callback(node: INode, stats: INodeStats) {
-        this.client.logger.success(`Node ${node.identifier} is ready!`);
+        this.client.logger.info(`Node ${node.identifier} is ready!`);
     }
 }

@@ -11,6 +11,8 @@ import { MoonlinkClient } from "./MoonLink.class";
 import { PrismaClient } from "../../generated/prisma";
 import FeatureLoader from "../loaders/Feature.loader";
 import App from "../apis/App";
+import mongoose, { Mongoose } from "mongoose";
+import MongoDB from "../database/MongoDB.db";
 
 export class BotClient extends Client {
     commands: Collection<string, Command>;
@@ -21,6 +23,7 @@ export class BotClient extends Client {
     body: any[];
     manager: MoonlinkClient;
     prisma: PrismaClient;
+    mongoose: Mongoose;
 
     constructor(options: ClientOptions){
         super(options);
@@ -30,11 +33,14 @@ export class BotClient extends Client {
         this.config = config;
         this.logger = new Logger();
         this.body = [];
-        this.manager = new MoonlinkClient(this)
+        this.manager = new MoonlinkClient(this);
         this.prisma = new PrismaClient();
+        this.mongoose = mongoose;
     }
 
     async startLogin(token: string){
+        this.logger.info(`Connecting... mongodb!`);
+        new MongoDB(this);
         this.logger.info(`Loading... commands!`);
         new CommandLoader(this);
         this.logger.info(`Loading... events!`);
