@@ -63,3 +63,12 @@ model GuildAutoRoles {
 	created_at				DateTime	@default(now())
 	updated_at				DateTime	@updatedAt
 }
+
+model GuildServerStats {
+	guild_id				String		
+	channel_id				String		@id
+	channel_name			String
+	parent_id				String		
+	created_at				DateTime	@default(now())
+	updated_at				DateTime	@updatedAt
+}
