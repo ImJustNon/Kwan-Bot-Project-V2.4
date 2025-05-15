@@ -1,31 +1,35 @@
 import express, { Application } from "express";
 import { BotClient } from "../classes/Client.class";
 import { config } from "../config/config";
-import { HelloWorld } from "./routes/HelloWorld.route";
+import ClientRouter from "./routes/Client.route";
+import UsersRouter from "./routes/Users.route";
+import PublicRouter from "./routes/Public.route";
 
 export default class App {
-    private client: BotClient;
-    private app: Application
+    public client: BotClient;
+    public express: Application;
     
     constructor(client: BotClient){
         this.client = client;
-        this.app = express();
+        this.express = express();
 
         this.middlewares();
         this.routers();
     }
 
     private middlewares() {
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.express.use(express.json());
+        this.express.use(express.urlencoded({ extended: true }));
     }
 
     private routers() {
-        this.app.use('/', new HelloWorld().getRouter());
+        this.express.use('/api/v2/client', new ClientRouter(this).getRouter());
+        this.express.use('/api/v2/users', new UsersRouter(this).getRouter());
+        this.express.use('/api/v2/public', new PublicRouter(this).getRouter());
     }
 
     public start(){
-        this.app.listen(config.api.port, (e): void => {
+        this.express.listen(config.api.port, (e): void => {
             if(e) return this.client.logger.error(e);
             this.client.logger.info(`API Server Started at Port : ${config.api.port}`);
         });

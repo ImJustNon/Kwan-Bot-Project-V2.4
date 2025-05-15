@@ -10,9 +10,9 @@ import EventLoader from "../loaders/Event.loader";
 import { MoonlinkClient } from "./MoonLink.class";
 import { PrismaClient } from "../../generated/prisma";
 import FeatureLoader from "../loaders/Feature.loader";
-import App from "../apis/App";
 import mongoose, { Mongoose } from "mongoose";
 import MongoDB from "../database/MongoDB.db";
+import App from "../apis/App";
 
 export class BotClient extends Client {
     commands: Collection<string, Command>;
@@ -48,9 +48,9 @@ export class BotClient extends Client {
         this.logger.info(`Loading... Features!`);
         new FeatureLoader(this);
         this.logger.info(`Loading... API!`);
-        const app = new App(this);
+        const express = new App(this);
         this.regisCommand();
-        await this.login(token).then(() => app.start());
+        await this.login(token).then(() => express.start());
     }
 
 
