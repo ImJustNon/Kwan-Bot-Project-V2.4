@@ -15,7 +15,7 @@ export default class PublicRouter extends AppRouter {
         this.botInfoController = new BotInfoController(app);
         this.routers();
     }
-
+ 
     routers(){
         this.router.get("/commands",
             (req: Request, res: Response) => this.commandsController.getAll(req, res)
