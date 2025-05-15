@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import AppRouter from "../classes/AppRouter.class";
-import App from "../App";
+import App from "../App"; 
 import CommandsController from "../controllers/Commands.controller";
 import { oneOf, query } from "express-validator";
 import BotInfoController from "../controllers/BotInfo.controller";
