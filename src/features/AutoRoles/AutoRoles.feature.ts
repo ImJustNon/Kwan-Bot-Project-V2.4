@@ -9,7 +9,7 @@ export default class AutoRoles extends Feature {
         });
     }
 
-    async callback(client: BotClient) {
-        new GuildMemberAdd(client);
+    async callback() {
+        new GuildMemberAdd(this.client);
     }
 }

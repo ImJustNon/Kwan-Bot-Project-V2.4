@@ -10,8 +10,8 @@ export default class MusicChannel extends Feature {
         });
     }
 
-    async callback(client: BotClient) {
-        new InteractionCreate(client);
-        new MessageCreate(client)
+    async callback() {
+        new InteractionCreate(this.client);
+        new MessageCreate(this.client)
     }
 }

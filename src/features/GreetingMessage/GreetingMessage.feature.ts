@@ -9,7 +9,7 @@ export default class GreetingMessage extends Feature {
         });
     }
 
-    async callback(client: BotClient): Promise<void> {
-        new GuildCreate(client);
+    async callback(): Promise<void> {
+        new GuildCreate(this.client);
     }
 }

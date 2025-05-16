@@ -5,6 +5,7 @@ import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
 import UpdateData from "../../utils/UpdateData.utils";
+import { ServerStatsPrefix } from "../../enums/ServerStats.enum";
 
 export default class ServerStatsCreate extends Command {
     constructor(client: BotClient) {
@@ -53,23 +54,39 @@ export default class ServerStatsCreate extends Command {
                     choices: [
                         {
                             name: "จำนวนสามาชิกทั้งหมด",
-                            value: "%COUNT_MEMBERS_ALL%",
+                            value: ServerStatsPrefix.CountMembersAll,
                         },
                         {
                             name: "จำนวนสามาชิกคน",
-                            value: "%COUNT_MEMBERS_USERS%"
+                            value: ServerStatsPrefix.CountMembersUsers
                         },
                         {
                             name: "จำนวนสามาชิกบอท",
-                            value: "%COUNT_MEMBERS_BOTS%"
+                            value: ServerStatsPrefix.CountMembersBots
+                        },
+                        {
+                            name: "จำนวนสามาชิกออนไลน์",
+                            value: ServerStatsPrefix.CountMembersOnline
+                        },
+                        {
+                            name: "จำนวนสามาชิกห้ามรบกวน",
+                            value: ServerStatsPrefix.CountMembersDnd
+                        },
+                        {
+                            name: "จำนวนสามาชิกไม่อยู่",
+                            value: ServerStatsPrefix.CountMembersIdle
+                        },
+                        {
+                            name: "จำนวนสามาชิกออฟไลน์",
+                            value: ServerStatsPrefix.CountMembersOffline
                         },
                         {
                             name: "จำนวนช่องเสียงทั้งหมด",
-                            value: "%COUNT_CHANNELS_VOICE%"
+                            value: ServerStatsPrefix.CountChannelsVoice
                         },
                         {
                             name: "จำนวนช่องข้อความทั้งหมด",
-                            value: "%COUNT_CHANNELS_TEXT%"
+                            value: ServerStatsPrefix.CountChannelsText
                         }
                     ]
                 },
@@ -96,8 +113,12 @@ export default class ServerStatsCreate extends Command {
                 }
             });
             
+
             let parentId: string; 
             if(findParent.length === 0){
+                parentId = (await this.createParent(guild)).id;
+            }
+            else if(findParent.length !== 0 && !guild.channels.cache.get(findParent[0].parent_id)){
                 parentId = (await this.createParent(guild)).id;
             }
             else {
@@ -112,7 +133,8 @@ export default class ServerStatsCreate extends Command {
                     guild_id: guild.id,
                     channel_id: channelId,
                     channel_name: channelName,
-                    parent_id: parentId
+                    parent_id: parentId,
+                    prefix: selectedData
                 }
             });
 
