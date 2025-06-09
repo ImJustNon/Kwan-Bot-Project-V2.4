@@ -58,19 +58,26 @@ export const config: Config = {
     owners: ["708965153131200594"],
     nodes: [
         {
-            identifier: "Main",
-            host: "88.99.215.154",
-            port: 3012,
-            password: "discord.gg/W2GheK3F9m",
-            secure: false,
-        },
-        {
-            identifier: "Serenetia-V4",
-            password: "https://dsc.gg/ajidevserver",
-            host: "lavalinkv4.serenetia.com",
-            port: 443,
-            secure: true
+            identifier: "Local",
+            host: "192.168.1.100",
+            port: 2333,
+            password: "youshallnotpass",
+            secure: false
         }
+        // {
+        //     identifier: "Main",
+        //     host: "88.99.215.154",
+        //     port: 3012,
+        //     password: "discord.gg/W2GheK3F9m",
+        //     secure: false,
+        // },
+        // {
+        //     identifier: "Serenetia-V4",
+        //     password: "https://dsc.gg/ajidevserver",
+        //     host: "lavalinkv4.serenetia.com",
+        //     port: 443,
+        //     secure: true
+        // }
     ],
     assets: {
         ...assets
