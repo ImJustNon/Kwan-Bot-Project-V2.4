@@ -9,7 +9,7 @@ export default class ChannelDelete {
         client.on("channelDelete", async(channel: DMChannel | NonThreadGuildBasedChannel) => {
 
             if(channel.isDMBased()) return;
-            console.log(channel.guild);
+            // console.log(channel.guild);
 
             try {
                 const findStatusChannel = await client.prisma.guildServerStats.findMany({
