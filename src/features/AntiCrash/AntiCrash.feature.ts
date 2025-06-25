@@ -9,15 +9,15 @@ export default class AntiCrash extends Feature {
     }
 
     async callback() {
-        process.on('unhandledRejection', (reason, promise) => {
-            this.client.logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
-        });
-        process.on('uncaughtException', err => {
-            this.client.logger.error('Uncaught Exception thrown:', err);
-        });
-        process.on('SIGINT', this.handleExit);
-        process.on('SIGTERM', this.handleExit);
-        process.on('SIGQUIT', this.handleExit);
+        // process.on('unhandledRejection', (reason, promise) => {
+        //     this.client.logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+        // });
+        // process.on('uncaughtException', err => {
+        //     this.client.logger.error('Uncaught Exception thrown:', err);
+        // });
+        // process.on('SIGINT', this.handleExit);
+        // process.on('SIGTERM', this.handleExit);
+        // process.on('SIGQUIT', this.handleExit);
     }
 
     private async handleExit(){

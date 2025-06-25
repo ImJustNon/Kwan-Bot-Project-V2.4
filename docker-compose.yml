@@ -1,30 +1,14 @@
-version: "3"
 
 services:
-  
-  # kwans-2-bot:
-  #   build: .
-  #   image: kwans-2-bot:latest
-  #   container_name: discord-musicbot
-  #   restart: unless-stopped
-  #   networks:
-  #     - lavalink-net
-  #   depends_on:
-  #     - lavalink
-    # volumes:
-    #   - ./config.js:/usr/src/app/config.js:ro
-
-  lavalink:
-    image: fredboat/lavalink:4.0.8
-    container_name: music-lavalink
-    hostname: lavalink
-    restart: unless-stopped
-    # networks:
-    #   - lavalink-net
-    # volumes:
-    #   - ./docker/application.yml:/opt/Lavalink/application.yml:ro
+  client:
+    build: .
+    container_name: kwans-client
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    command: yarn dev
     ports:
-      - 2333:2333
-
-# networks:
-#   lavalink-net:
+      - "9090:9090"
+    restart: unless-stopped

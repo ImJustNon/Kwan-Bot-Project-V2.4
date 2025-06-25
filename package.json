@@ -15,7 +15,7 @@
 		"express-validator": "^7.2.1",
 		"fs": "^0.0.1-security",
 		"mongoose": "^8.14.2",
-		"moonlink.js": "^4.6.3",
+		"moonlink.js": "^4.6.18",
 		"path": "^0.12.7",
 		"play-dl": "^1.9.7",
 		"signale": "^1.4.0"
