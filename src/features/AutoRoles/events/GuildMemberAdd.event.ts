@@ -1,18 +1,22 @@
 import { EmbedBuilder, GuildMember, Role } from "discord.js";
 import { BotClient } from "../../../classes/Client.class";
 import ReplyEmbed from "../../../utils/ReplyEmbed.util";
+import { GuildAutoRoles } from "../../../models/GuildAutoRoles.model";
 
 export default class GuildMemberAdd {
     constructor(client: BotClient){
         client.on("guildMemberAdd", async(member: GuildMember) => {
             try {
-                const findGuildAutoRoles = await client.prisma.guildAutoRoles.findMany({
-                    where: {
-                        guild_id: member.guild.id
-                    },
-                    select: {
-                        role_id: true
-                    }
+                // const findGuildAutoRoles = await client.prisma.guildAutoRoles.findMany({
+                //     where: {
+                //         guild_id: member.guild.id
+                //     },
+                //     select: {
+                //         role_id: true
+                //     }
+                // });
+                const findGuildAutoRoles = await GuildAutoRoles.find({
+                    guild_id: member.guild.id
                 });
 
                 if(!findGuildAutoRoles || findGuildAutoRoles.length === 0) return;
