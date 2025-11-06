@@ -3,6 +3,7 @@ import { BotClient } from "../../../classes/Client.class";
 import { Player, SearchResult } from "moonlink.js";
 import MusicChannelMessage from "../../../utils/MusicChannelMessage.util";
 import MusicChannelWebhook from "../../../utils/MusicChannelWebhook.util";
+import { GuildMusicChannel } from "../../../models/GuildMusicChannel.model";
 
 export default class MessageCreate {
     constructor(client: BotClient) {
@@ -16,19 +17,23 @@ export default class MessageCreate {
             if(!textChannel.name.includes("music") && !textChannel.name.includes(`${client.user?.username}-music`) && !textChannel.name.includes(`${client.user?.username}`)) return;
     
             // then check from database
-            const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
-                where: {
-                    guild_id: message.guild.id,
-                    channel_id: message.channel.id
-                },
-                select: {
-                    content_banner_id: true,
-                    content_playing_id: true,
-                    content_queue_id: true,
-                    webhook_id: true,
-                    webhook_token: true,
-                }
-            });
+            // const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
+            //     where: {
+            //         guild_id: message.guild.id,
+            //         channel_id: message.channel.id
+            //     },
+            //     select: {
+            //         content_banner_id: true,
+            //         content_playing_id: true,
+            //         content_queue_id: true,
+            //         webhook_id: true,
+            //         webhook_token: true,
+            //     }
+            // });
+            const findMusicChannel = await GuildMusicChannel.findOne({
+                guild_id: message.guild.id,
+                channel_id: message.channel.id
+            }); 
             if(!findMusicChannel) return;
     
             const messageContent: string = message.content;

@@ -3,6 +3,7 @@ import { BotClient } from "../../../classes/Client.class";
 import { Player } from "moonlink.js";
 import MusicChannelMessage from "../../../utils/MusicChannelMessage.util";
 import MusicChannelWebhook from "../../../utils/MusicChannelWebhook.util";
+import { GuildMusicChannel } from "../../../models/GuildMusicChannel.model";
 
 export default class InteractionCreate {
     constructor(client: BotClient) {
@@ -19,18 +20,22 @@ export default class InteractionCreate {
 
 
             // check channel from database
-            const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
-                where: {
-                    guild_id: interaction.guild?.id,
-                    channel_id: interaction.channel?.id
-                },
-                select: {
-                    content_banner_id: true,
-                    content_playing_id: true,
-                    content_queue_id: true,
-                    webhook_id: true,
-                    webhook_token: true,
-                }
+            // const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
+            //     where: {
+            //         guild_id: interaction.guild?.id,
+            //         channel_id: interaction.channel?.id
+            //     },
+            //     select: {
+            //         content_banner_id: true,
+            //         content_playing_id: true,
+            //         content_queue_id: true,
+            //         webhook_id: true,
+            //         webhook_token: true,
+            //     }
+            // });
+            const findMusicChannel = await GuildMusicChannel.findOne({
+                guild_id: interaction.guild?.id,
+                channel_id: interaction.channel?.id
             });
             if(!findMusicChannel) return;
 
