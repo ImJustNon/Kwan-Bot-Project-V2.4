@@ -2,6 +2,7 @@ import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonIn
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
+import { GuildMusicChannel } from "../../models/GuildMusicChannel.model";
 
 export default class MusicChannelSetup extends Command {
     constructor(client: BotClient) {
@@ -25,15 +26,19 @@ export default class MusicChannelSetup extends Command {
 
     async callback(client: BotClient, interaction: CommandInteraction): Promise<any> {
         try {
-            const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
-                where: {
-                    guild_id: interaction.guild?.id,
-                },
-                select: {
-                    channel_id: true,
-                    webhook_id: true
-                }
+            // const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
+            //     where: {
+            //         guild_id: interaction.guild?.id,
+            //     },
+            //     select: {
+            //         channel_id: true,
+            //         webhook_id: true
+            //     }
+            // });
+            const findMusicChannel = await GuildMusicChannel.findOne({
+                guild_id: interaction.guild?.id
             });
+
             if(!findMusicChannel){
                 return await interaction.reply({
                     content: `🟡 | เอ๊ะ! ไม่พบข้อมูลการตั้งค่าช่องเล่นเพลงเลยนะ`
@@ -81,10 +86,13 @@ export default class MusicChannelSetup extends Command {
                         await musicChannel.delete().catch((): void => {});
                     }
                     // Delete From DB
-                    await client.prisma.guildMusicChannel.delete({
-                        where: {
-                            guild_id: interaction.guild?.id
-                        }
+                    // await client.prisma.guildMusicChannel.delete({
+                    //     where: {
+                    //         guild_id: interaction.guild?.id
+                    //     }
+                    // });
+                    await GuildMusicChannel.deleteOne({
+                        guild_id: interaction.guild?.id
                     });
                     return await i.update({ 
                         content: '🟢 | ทำการลบการตั้งค่าห้องระบบเพลงเรียบร้อยเเล้วค่ะ', 

@@ -2,6 +2,7 @@ import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonSt
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
+import { GuildMusicChannel } from "../../models/GuildMusicChannel.model";
 
 export default class MusicChannelSetup extends Command {
     constructor(client: BotClient) {
@@ -30,10 +31,13 @@ export default class MusicChannelSetup extends Command {
 
         try {
             const guildId: string | undefined = interaction.guild?.id;
-            const findCurrentData = await client.prisma.guildMusicChannel.findUnique({
-                where: {
-                    guild_id: guildId
-                }
+            // const findCurrentData = await client.prisma.guildMusicChannel.findUnique({
+            //     where: {
+            //         guild_id: guildId
+            //     }
+            // });
+            const findCurrentData = await GuildMusicChannel.findOne({
+                guild_id: guildId
             });
 
             if(findCurrentData){
@@ -128,18 +132,32 @@ export default class MusicChannelSetup extends Command {
             ],
         }).then((msg: Message) => contentCurrentId = msg.id);
 
-        await client.prisma.guildMusicChannel.create({
-            data: {
-                guild_id: guildId as string,
-                channel_id: channelId,
-                webhook_id: webhook.id,
-                webhook_token: webhook.token,
-                creator_user_id: interaction.user.id,
-                content_banner_id: contentBannerId,
-                content_queue_id: contentqueueId,
-                content_playing_id: contentCurrentId
-            }
-        }).catch(e =>{
+        // await client.prisma.guildMusicChannel.create({
+        //     data: {
+        //         guild_id: guildId as string,
+        //         channel_id: channelId,
+        //         webhook_id: webhook.id,
+        //         webhook_token: webhook.token,
+        //         creator_user_id: interaction.user.id,
+        //         content_banner_id: contentBannerId,
+        //         content_queue_id: contentqueueId,
+        //         content_playing_id: contentCurrentId
+        //     }
+        // }).catch(e =>{
+        //     return interaction.followUp({
+        //         content: "🔴 | ไม่สามารถใช้งานได่ในขณะนี้",
+        //     });
+        // });
+        await GuildMusicChannel.create({
+            guild_id: guildId as string,
+            channel_id: channelId,
+            webhook_id: webhook.id,
+            webhook_token: webhook.token,
+            author_id: interaction.user.id,
+            content_banner_id: contentBannerId,
+            content_queue_id: contentqueueId,
+            content_playing_id: contentCurrentId
+        }).catch(e => {
             return interaction.followUp({
                 content: "🔴 | ไม่สามารถใช้งานได่ในขณะนี้",
             });
