@@ -3,6 +3,7 @@ import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
 import { EmbedBuilder, Message, TextChannel } from "discord.js";
 import { config } from "../../config/config";
+import { GuildMusicChannel } from "../../models/GuildMusicChannel.model";
 
 export default class QueueEnd extends Event {
     constructor(client: BotClient, file: string) {
@@ -16,11 +17,15 @@ export default class QueueEnd extends Event {
         const channel: TextChannel = this.client.channels.cache.get(player.textChannelId) as TextChannel;
         // const guild: Guild = client.guilds.cache.get(player.guildId) as Guild;
         try {
-            const isMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
-                where: {
-                    guild_id: player.guildId,
-                    channel_id: player.textChannelId
-                },
+            // const isMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
+            //     where: {
+            //         guild_id: player.guildId,
+            //         channel_id: player.textChannelId
+            //     },
+            // });
+            const isMusicChannel = await GuildMusicChannel.findOne({
+                guild_id: player.guildId,
+                channel_id: player.textChannelId,
             });
 
             // send queue end message

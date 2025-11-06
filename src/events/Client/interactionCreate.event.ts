@@ -4,6 +4,8 @@ import { Event } from "../../classes/Event.class";
 import { Command } from "../../classes/Command.class";
 import { SearchResult } from "moonlink.js";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildCommandChannel } from "../../models/GuildCommandChannel.model";
+import { GuildDisabledCommand } from "../../models/GuildDisabledCommand.model";
 
 export default class InteractionCreate extends Event {
     constructor(client: BotClient, file: string) {
@@ -42,28 +44,35 @@ export default class InteractionCreate extends Event {
 
 
                 // guild command channel check
-                const findGuildCommandChannel = await this.client.prisma.guildCommandChannel.findUnique({
-                    where: {
-                        guild_id: interaction.guild.id
-                    },
-                    select: {
-                        channel_id: true
-                    }
+                // const findGuildCommandChannel = await this.client.prisma.guildCommandChannel.findUnique({
+                //     where: {
+                //         guild_id: interaction.guild.id
+                //     },
+                //     select: {
+                //         channel_id: true
+                //     }
+                // });
+                const findGuildCommandChannel = await GuildCommandChannel.findOne({
+                    guild_id: interaction.guild.id
                 });
                 if(findGuildCommandChannel && findGuildCommandChannel.channel_id !== interaction.channelId) return await interaction.reply({...new ReplyEmbed().warn(`โปรดใช้คำสั่งในช่อง <#${findGuildCommandChannel.channel_id}> เท่านั้นนะคะ`), flags: MessageFlags.Ephemeral});
 
 
                 // guild disable command check
-                const findGuildDisabledCommand = await this.client.prisma.guildDisabledCommand.findMany({
-                    where: {
-                        guild_id: interaction.guild.id,
-                        command_name: command.name
-                    },
-                    select: {
-                        creator_user_id: true
-                    }
+                // const findGuildDisabledCommand = await this.client.prisma.guildDisabledCommand.findMany({
+                //     where: {
+                //         guild_id: interaction.guild.id,
+                //         command_name: command.name
+                //     },
+                //     select: {
+                //         creator_user_id: true
+                //     }
+                // });
+                const findGuildDisabledCommand = await GuildDisabledCommand.find({
+                    guild_id: interaction.guild.id,
+                    command_name: command.name
                 });
-                if(findGuildDisabledCommand.length !== 0) return await interaction.reply(new ReplyEmbed().warn(`คำสั่งนี้ได้ถูกปิดใช้งานโดย <@${findGuildDisabledCommand[0].creator_user_id}>`));
+                if(findGuildDisabledCommand.length !== 0) return await interaction.reply(new ReplyEmbed().warn(`คำสั่งนี้ได้ถูกปิดใช้งานโดย <@${findGuildDisabledCommand[0].author_id}>`));
 
 
                 // advance permission check

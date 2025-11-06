@@ -1,11 +1,12 @@
 import { INode, Player, Track, TTrackEndType } from "moonlink.js";
 import { BotClient } from "../../classes/Client.class";
 import { Event } from "../../classes/Event.class";
-import { EmbedBuilder, Message, TextChannel, VoiceChannel } from "discord.js";
+import { EmbedBuilder, Guild, Message, TextChannel, VoiceChannel } from "discord.js";
 import MusicChannelMessage from "../../utils/MusicChannelMessage.util";
 import ConvertTime from "../../utils/ConvertTime.util";
 import MusicChannelWebhook from "../../utils/MusicChannelWebhook.util";
 import { config } from "../../config/config";
+import { GuildMusicChannel } from "../../models/GuildMusicChannel.model";
 
 export default class TrackStart extends Event {
     constructor(client: BotClient, file: string) {
@@ -20,18 +21,22 @@ export default class TrackStart extends Event {
         const voice: VoiceChannel = this.client.channels.cache.get(player.voiceChannelId) as VoiceChannel; 
 
 
-        const findMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
-            where: {
-                guild_id: player.guildId,
-                channel_id: player.textChannelId
-            },
-            select: {
-                content_banner_id: true,
-                content_queue_id: true,
-                content_playing_id: true,
-                webhook_id: true,
-                webhook_token: true,
-            }
+        // const findMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
+        //     where: {
+        //         guild_id: player.guildId,
+        //         channel_id: player.textChannelId
+        //     },
+        //     select: {
+        //         content_banner_id: true,
+        //         content_queue_id: true,
+        //         content_playing_id: true,
+        //         webhook_id: true,
+        //         webhook_token: true,
+        //     }
+        // });
+        const findMusicChannel = await GuildMusicChannel.findOne({
+            guild_id: player.guildId,
+            channel_id: player.textChannelId
         });
 
         if(findMusicChannel){
