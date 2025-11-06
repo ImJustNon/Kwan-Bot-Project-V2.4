@@ -6,6 +6,7 @@ import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
 import UpdateData from "../../utils/UpdateData.utils";
 import { ServerStatsPrefix } from "../../enums/ServerStats.enum";
+import { GuildServerStats } from "../../models/GuildServerStats.model";
 
 export default class ServerStatsCreate extends Command {
     constructor(client: BotClient) {
@@ -107,12 +108,14 @@ export default class ServerStatsCreate extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            const findParent = await client.prisma.guildServerStats.findMany({
-                where: {
-                    guild_id: guild.id
-                }
+            // const findParent = await client.prisma.guildServerStats.findMany({
+            //     where: {
+            //         guild_id: guild.id
+            //     }
+            // });
+            const findParent = await GuildServerStats.find({
+                guild_id: guild.id
             });
-            
 
             let parentId: string; 
             if(findParent.length === 0){
@@ -128,14 +131,21 @@ export default class ServerStatsCreate extends Command {
             const channelName = selectedText.replace("%_%", selectedData);
             const channelId = await this.createChannel(client, guild, parentId, selectedChannelType, channelName, selectedData);
         
-            await client.prisma.guildServerStats.create({
-                data: {
-                    guild_id: guild.id,
-                    channel_id: channelId,
-                    channel_name: channelName,
-                    parent_id: parentId,
-                    prefix: selectedData
-                }
+            // await client.prisma.guildServerStats.create({
+            //     data: {
+            //         guild_id: guild.id,
+            //         channel_id: channelId,
+            //         channel_name: channelName,
+            //         parent_id: parentId,
+            //         prefix: selectedData
+            //     }
+            // });
+            await GuildServerStats.create({
+                guild_id: guild.id,
+                channel_id: channelId,
+                channel_name: channelName,
+                parent_id: parentId,
+                prefix: selectedData
             });
 
             await interaction.reply(new ReplyEmbed().success("ได้ทำการตั้งค่า สถานะเซิฟเวอร์ เรียบร้อยเเล้วนะคะ"));

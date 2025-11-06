@@ -5,6 +5,7 @@ import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
 import UpdateData from "../../utils/UpdateData.utils";
+import { GuildServerStats } from "../../models/GuildServerStats.model";
 
 export default class ServerStatsReset extends Command {
     constructor(client: BotClient) {
@@ -44,10 +45,13 @@ export default class ServerStatsReset extends Command {
         try {
             if(confirm !== "confirm") return await interaction.reply(new ReplyEmbed().warn("หากต้องการรีเซ็ตการตั้งค่าให้พิมพ์ \`confirm\` เท่านั้นนะคะ"));
 
-            await client.prisma.guildServerStats.deleteMany({
-                where: {
-                    guild_id: guild.id,
-                }
+            // await client.prisma.guildServerStats.deleteMany({
+            //     where: {
+            //         guild_id: guild.id,
+            //     }
+            // });
+            await GuildServerStats.deleteMany({
+                guild_id: guild.id
             });
 
             await interaction.reply(new ReplyEmbed().success("ได้ทำลบการตั้งค่า สถานะเซิฟเวอร์ เรียบร้อยเเล้วนะคะ"));
