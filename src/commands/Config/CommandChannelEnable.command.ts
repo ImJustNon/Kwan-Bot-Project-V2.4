@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildCommandChannel } from "../../models/GuildCommandChannel.model";
 
 export default class CommandChannelEnable extends Command {
     constructor(client: BotClient) {
@@ -48,22 +49,31 @@ export default class CommandChannelEnable extends Command {
 
 
         try {
-            const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
-                where: {
-                    guild_id: guild.id
-                }
+            // const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
+            //     where: {
+            //         guild_id: guild.id
+            //     }
+            // });
+            const findCommandChannel = await GuildCommandChannel.findOne({
+                guild_id: guild.id
             });
+
             if(findCommandChannel){
                 return await interaction.reply(new ReplyEmbed().warn(`Guild นี้ได้เปิดการตั้งค่า \`Command Channel\` ไว้เเล้วนะคะ หากต้องการตั้งค่าช่องใหม่ให้ปิดการใช้งาน \`/command-channel-disable\` ก่อนเเล้วตั้งค่าใหม่นะคะ`)); 
             }
 
             // insert data
-            await client.prisma.guildCommandChannel.create({
-                data: {
-                    guild_id: guild.id,
-                    channel_id: textChannel.id,
-                    creator_user_id: member.id
-                }
+            // await client.prisma.guildCommandChannel.create({
+            //     data: {
+            //         guild_id: guild.id,
+            //         channel_id: textChannel.id,
+            //         creator_user_id: member.id
+            //     }
+            // });
+            await GuildCommandChannel.create({
+                guild_id: guild.id,
+                channel_id: textChannel.id,
+                author_id: member.id
             });
             return await interaction.reply(new ReplyEmbed().success(`ทำการตั้งค่าช่อง <#${textChannel.id}> เป็นช่องใช้คำสั่งเรียบร้อยเเล้วค่ะ`));
         }

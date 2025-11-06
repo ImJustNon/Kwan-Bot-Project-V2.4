@@ -3,6 +3,7 @@ import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
 import { config } from "../../config/config";
+import { GuildDisabledCommand } from "../../models/GuildDisabledCommand.model";
 
 
 export default class CommandDisableList extends Command {
@@ -36,14 +37,17 @@ export default class CommandDisableList extends Command {
 
         
         try {
-            const findDisabledCommands = await client.prisma.guildDisabledCommand.findMany({
-                where: {
-                    guild_id: guild.id
-                },
-                select: {
-                    command_name: true,
-                    creator_user_id: true
-                }
+            // const findDisabledCommands = await client.prisma.guildDisabledCommand.findMany({
+            //     where: {
+            //         guild_id: guild.id
+            //     },
+            //     select: {
+            //         command_name: true,
+            //         creator_user_id: true
+            //     }
+            // });
+            const findDisabledCommands = await GuildDisabledCommand.find({
+                guild_id: guild.id
             });
 
             if(findDisabledCommands.length === 0) return await interaction.reply(new ReplyEmbed().warn('ไม่การตั้งค่าการปิดใช้งานคำสั่งใน Guild นี้นะคะ'));
@@ -52,7 +56,7 @@ export default class CommandDisableList extends Command {
             for(const cmd of findDisabledCommands){
                 embed.addFields({
                     name: `คำสั่ง : \`/${cmd.command_name}\``,
-                    value: `ปิดโดย : <@${cmd.creator_user_id}>`,
+                    value: `ปิดโดย : <@${cmd.author_id}>`,
                     inline: true
                 });
             }

@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildCommandChannel } from "../../models/GuildCommandChannel.model";
 
 export default class CommandChannelDisable extends Command {
     constructor(client: BotClient) {
@@ -31,21 +32,29 @@ export default class CommandChannelDisable extends Command {
 
 
         try {
-            const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
-                where: {
-                    guild_id: guild.id
-                },
+            // const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
+            //     where: {
+            //         guild_id: guild.id
+            //     },
+            // });
+            const findCommandChannel = await GuildCommandChannel.findOne({
+                guild_id: guild.id
             });
+
             if(!findCommandChannel){
                 return await interaction.reply(new ReplyEmbed().warn(`Guild นี้ยังไม่ได้เปิดการตั้งค่า \`Command Channel\` ไว้นะคะ หากต้องการตั้งค่าช่องใหม่ใช้คำสั่ง \`/command-channel-enable\` ได้เลยนะคะ`)); 
             }
 
             // insert data
-            await client.prisma.guildCommandChannel.delete({
-                where: {
-                    guild_id: guild.id,
-                }
+            // await client.prisma.guildCommandChannel.delete({
+            //     where: {
+            //         guild_id: guild.id,
+            //     }
+            // });
+            await GuildCommandChannel.deleteOne({
+                guild_id: guild.id
             });
+
             return await interaction.reply(new ReplyEmbed().success(`ทำยกเลิกการตั้งค่า ช่องคำสั่ง เรียบร้อยเเล้วค่ะ`))
         }
         catch(e){
