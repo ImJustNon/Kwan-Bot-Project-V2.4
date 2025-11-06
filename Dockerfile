@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm tsx ts-node nodemon
 
 # Install dependencies
 RUN pnpm install

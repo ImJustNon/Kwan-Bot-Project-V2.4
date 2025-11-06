@@ -18,8 +18,8 @@ services:
     container_name: kwans2_lavalink_prod
     restart: unless-stopped
     volumes:
-      - ./application.yml:/opt/Lavalink/application.yml
-      - ./plugins:/opt/Lavalink/plugins
+      - ./lavalink/application.yml:/opt/Lavalink/application.yml
+      - ./lavalink/plugins:/opt/Lavalink/plugins
     networks:
       - internal
 
