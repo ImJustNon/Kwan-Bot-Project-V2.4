@@ -12,6 +12,8 @@ services:
       - .:/app
       - /app/node_modules
     command: pnpm run dev
+    ports:
+      - 9009:9090
     networks:
       - internal
 
