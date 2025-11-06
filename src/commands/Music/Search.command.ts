@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, CommandInteraction, EmbedBuilder, Guild, GuildChannel, GuildMember, Interaction, SlashCommandStringOption, TextChannel, VoiceBasedChannel } from "discord.js";
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, CommandInteraction, EmbedBuilder, Guild, GuildChannel, GuildMember, Interaction, SlashCommandStringOption, TextChannel, VoiceBasedChannel } from "discord.js";
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { Player, SearchResult, Track } from "moonlink.js";
@@ -35,7 +35,7 @@ export default class Search extends Command {
             ],
         });
     }
-    async callback(client: BotClient, interaction: CommandInteraction): Promise<any> {
+    async callback(client: BotClient, interaction: ChatInputCommandInteraction): Promise<any> {
 
         const guild: Guild | undefined = client.guilds.cache.get(interaction.guildId || "");
         const member: GuildMember | undefined = guild?.members.cache.get(interaction.member?.user.id || "");

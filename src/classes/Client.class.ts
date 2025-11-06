@@ -8,7 +8,6 @@ import { Event } from "./Event.class";
 import CommandLoader from "../loaders/Command.loader";
 import EventLoader from "../loaders/Event.loader";
 import { MoonlinkClient } from "./MoonLink.class";
-import { PrismaClient } from "../../generated/prisma";
 import FeatureLoader from "../loaders/Feature.loader";
 import mongoose, { Mongoose } from "mongoose";
 import MongoDB from "../database/MongoDB.db";

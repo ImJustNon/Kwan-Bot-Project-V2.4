@@ -6,7 +6,6 @@
 	"dependencies": {
 		"@discordjs/rest": "^2.5.0",
 		"@discordjs/voice": "^0.18.0",
-		"@prisma/client": "^6.7.0",
 		"axios": "^1.9.0",
 		"discord.js": "^14.19.2",
 		"dotenv": "^16.5.0",
@@ -26,19 +25,15 @@
 		"@types/node": "^22.15.3",
 		"@types/signale": "^1.4.7",
 		"nodemon": "^3.1.10",
-		"prisma": "^6.7.0",
 		"rimraf": "^6.0.1",
+		"ts-node": "^10.9.2",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3"
 	},
 	"scripts": {
-		"build": "rimraf build && tsc && cp -r generated build/ && find build -name '*.d.ts' -delete",
-		"ts.check": "tsc --project tsconfig.json",
-		"add-build": "git add dist",
+		"build": "rimraf build && tsc",
 		"start": "node ./build/src/index.js",
-		"dev": "nodemon ./src/client.ts",
-		"prisma:migrate": "npx prisma migrate dev",
-		"prisma:studio": "npx prisma studio"
+		"dev": "nodemon ./src/client.ts"
 	},
 	"signale": {
 		"displayScope": true,
@@ -48,8 +43,5 @@
 		"displayLabel": true,
 		"displayTimestamp": true,
 		"underlineLabel": true
-	},
-	"prisma": {
-		"schema": "prisma/schema.prisma"
 	}
 }
