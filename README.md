@@ -2,7 +2,7 @@
 
 <img src="./assets/182a4ba8-3faa-462c-ac59-6f6c5f2a8dc2.png" alt="Kwan Bot" width="200"/>
 
-# Kwan Discord Bot v2.4
+# Kwan's Discord Bot v2
 
 [![Discord.js](https://img.shields.io/badge/Discord.js-v14.19.2-blue.svg)](https://discord.js.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
