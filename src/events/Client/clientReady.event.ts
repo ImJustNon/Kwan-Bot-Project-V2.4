@@ -7,7 +7,7 @@ import { config } from "../../config/config";
 export default class Ready extends Event {
 	constructor(client: BotClient, file: string) {
 		super(client, file, {
-			name: "clientReady",
+			name: "ready",
 			type: "client"
 		});
 	}

@@ -1,14 +1,45 @@
+version: "3.9"
 
 services:
   client:
-    build: .
-    container_name: kwans-client
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: kwans2_client
+    restart: unless-stopped
+    env_file: .env
     volumes:
       - .:/app
       - /app/node_modules
-    env_file:
-      - .env
-    command: yarn dev
-    ports:
-      - "9090:9090"
+    command: pnpm run dev
+    networks:
+      - internal
+
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: kwans2_lavalink
     restart: unless-stopped
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
+      - ./plugins:/opt/Lavalink/plugins
+    networks:
+      - internal
+
+  mongo:
+    image: mongo:7
+    container_name: kwans2_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - internal
+
+
+networks:
+  internal:
+
+volumes:
+  mongo_data:

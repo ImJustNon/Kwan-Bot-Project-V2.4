@@ -1,51 +1,42 @@
+version: "3.9"
 
 services:
   client:
-    build: .
-    container_name: kwans-client
-    volumes:
-      - .:/app
-      - /app/node_modules
-    env_file:
-      - .env.prod
-    command: yarn start
-    ports:
-      - "9090:9090"
-    depends_on: 
-      - lavalink
-      - database
-    networks:
-      - lavalink-net
-      - postgres-net
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: kwans2_client_prod
     restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - mongo
+    networks:
+      - internal
 
   lavalink:
-    image: ghcr.io/lavalink-devs/lavalink:4-alpine
-    container_name: kwans-lavalink
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: kwans2_lavalink_prod
+    restart: unless-stopped
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
+      - ./plugins:/opt/Lavalink/plugins
+    networks:
+      - internal
+
+  mongo:
+    image: mongo:7
+    container_name: kwans2_mongo_prod
     restart: unless-stopped
     environment:
-      - _JAVA_OPTIONS=-Xmx2G
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - ./lavalink/application.yml:/opt/Lavalink/application.yml
-      - ./lavalink/plugins/:/opt/Lavalink/plugins/
+      - mongo_data:/data/db
     networks:
-      - lavalink-net
-
-  database:
-    image: postgres:15
-    container_name: kwans-postgres
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=discord_14
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks: 
-      - postgres-net
-
-volumes:
-  pgdata:
+      - internal
 
 networks:
-  lavalink-net:
-  postgres-net:
+  internal:
+
+volumes:
+  mongo_data:
