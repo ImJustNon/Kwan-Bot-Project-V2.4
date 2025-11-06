@@ -10,6 +10,7 @@ services:
     env_file: .env.prod
     depends_on:
       - mongo
+      - lavalink
     ports:
       - 9009:9090
     networks:
