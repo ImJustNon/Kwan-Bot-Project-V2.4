@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoVoiceChannel } from "../../models/GuildAutoVoiceChannel.model";
 
 export default class AutoVoiceChannelAdd extends Command {
     constructor(client: BotClient) {
@@ -48,10 +49,13 @@ export default class AutoVoiceChannelAdd extends Command {
 
 
         try {
-            const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
-                where: {
-                    guild_id: guild.id
-                }
+            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
+            //     where: {
+            //         guild_id: guild.id
+            //     }
+            // });
+            const findVoiceChannel = await GuildAutoVoiceChannel.find({
+                guild_id: guild.id
             });
             if(findVoiceChannel.filter(vc => vc.channel_id === voiceChannel.id).length !== 0){
                 return await interaction.reply(new ReplyEmbed().warn(`ช่อง <#${voiceChannel.id}> ได้ถูกตั้งค่าเอาไว้เเล้วน่ะ`)); 
@@ -61,12 +65,17 @@ export default class AutoVoiceChannelAdd extends Command {
             if(findVoiceChannel.length >= 5) return await interaction.reply(new ReplyEmbed().warn("เซิฟเวอร์นี้ได้ทำการตั้งค่าถึงสูงสุดเเล้ว โปรดลบช่องเก่าที่ไม่ได้ใช้ก่อนทำการตั้งค่าใหม่น่ะ"));
 
             // insert data
-            await client.prisma.guildAutoVoiceChannel.create({
-                data: {
-                    guild_id: guild.id,
-                    channel_id: voiceChannel.id,
-                    creator_user_id: member.id
-                }
+            // await client.prisma.guildAutoVoiceChannel.create({
+            //     data: {
+            //         guild_id: guild.id,
+            //         channel_id: voiceChannel.id,
+            //         creator_user_id: member.id
+            //     }
+            // });
+            await GuildAutoVoiceChannel.create({
+                guild_id: guild.id,
+                channel_id: voiceChannel.id,
+                author_id: member.id
             });
             return await interaction.reply(new ReplyEmbed().success(`ทำการตั้งค่าช่อง <#${voiceChannel.id}> เป็นช่องเสียงอัตโนมัติเรียบร้อยเเล้ว`))
         }

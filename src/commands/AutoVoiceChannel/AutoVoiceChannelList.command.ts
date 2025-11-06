@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoVoiceChannel } from "../../models/GuildAutoVoiceChannel.model";
 
 export default class AutoVoiceChannelAdd extends Command {
     constructor(client: BotClient) {
@@ -30,10 +31,13 @@ export default class AutoVoiceChannelAdd extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
-                where: {
-                    guild_id: guild.id
-                }
+            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
+            //     where: {
+            //         guild_id: guild.id
+            //     }
+            // });
+            const findVoiceChannel = await GuildAutoVoiceChannel.find({
+                guild_id: guild.id
             });
 
             if(findVoiceChannel.length === 0) return await interaction.reply(new ReplyEmbed().warn("ไม่พบข้อมูลการตั้งค่า ช่องเสียงอัตโนมัติ ในเซืฟเวอร์นี้"));
@@ -45,7 +49,7 @@ export default class AutoVoiceChannelAdd extends Command {
                 const dateFormat = date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
                 embed.addFields({
                     name: `🔊 | <#${vc.channel_id}> `,
-                    value: `🔧 | <@${vc.creator_user_id}> \n ⌛ | \`${dateFormat}\``,
+                    value: `🔧 | <@${vc.author_id}> \n ⌛ | \`${dateFormat}\``,
                     inline: true,
                 });
             });

@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoVoiceChannel } from "../../models/GuildAutoVoiceChannel.model";
 
 export default class AutoVoiceChannelReset extends Command {
     constructor(client: BotClient) {
@@ -30,11 +31,15 @@ export default class AutoVoiceChannelReset extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            await client.prisma.guildAutoVoiceChannel.deleteMany({
-                where: {
-                    guild_id: guild.id,
-                }
+            // await client.prisma.guildAutoVoiceChannel.deleteMany({
+            //     where: {
+            //         guild_id: guild.id,
+            //     }
+            // });
+            await GuildAutoVoiceChannel.deleteMany({
+                guild_id: guild.id
             });
+
             return await interaction.reply(new ReplyEmbed().success(`รีเซ็ตการตั้งค่าเรียบร้อยเเล้ว`));
         }
         catch(e){

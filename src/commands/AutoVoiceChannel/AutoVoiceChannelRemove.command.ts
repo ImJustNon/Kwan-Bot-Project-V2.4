@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoVoiceChannel } from "../../models/GuildAutoVoiceChannel.model";
 
 export default class AutoVoiceChannelAdd extends Command {
     constructor(client: BotClient) {
@@ -48,23 +49,33 @@ export default class AutoVoiceChannelAdd extends Command {
 
 
         try {
-            const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findUnique({
-                where: {
-                    guild_id: guild.id,
-                    channel_id: voiceChannel.id
-                }
+            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findUnique({
+            //     where: {
+            //         guild_id: guild.id,
+            //         channel_id: voiceChannel.id
+            //     }
+            // });
+            const findVoiceChannel = await GuildAutoVoiceChannel.findOne({
+                guild_id: guild.id,
+                channel_id: voiceChannel.id
             });
+
             if(!findVoiceChannel){
                 return await interaction.reply(new ReplyEmbed().warn(`ช่อง <#${voiceChannel.id}> ยังไม่ได้ถูกตั้งค่าน่ะ`)); 
             }
 
             // delete data
-            await client.prisma.guildAutoVoiceChannel.delete({
-                where: {
-                    guild_id: guild.id,
-                    channel_id: voiceChannel.id,
-                }
+            // await client.prisma.guildAutoVoiceChannel.delete({
+            //     where: {
+            //         guild_id: guild.id,
+            //         channel_id: voiceChannel.id,
+            //     }
+            // });
+            await GuildAutoVoiceChannel.deleteOne({
+                guild_id: guild.id,
+                channel_id: voiceChannel.id
             });
+
             return await interaction.reply(new ReplyEmbed().success(`ลบช่อง <#${voiceChannel.id}> ออกจากการตั้งค่าเรียบร้อยเเล้ว`))
         }
         catch(e){
