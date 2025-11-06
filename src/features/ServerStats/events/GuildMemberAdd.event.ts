@@ -3,21 +3,32 @@ import { BotClient } from "../../../classes/Client.class";
 import ReplyEmbed from "../../../utils/ReplyEmbed.util";
 import { ServerStatsPrefix } from "../../../enums/ServerStats.enum";
 import UpdateData from "../../../utils/UpdateData.utils";
+import { GuildServerStats } from "../../../models/GuildServerStats.model";
 
 export default class GuildMemberAdd {
     constructor(client: BotClient){
         client.on("guildMemberAdd", async(member: GuildMember) => {
             try {
-                const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                    where: {
-                        guild_id: member.guild.id,
-                        prefix: {
-                            in: [
-                                ServerStatsPrefix.CountMembersUsers,
-                                ServerStatsPrefix.CountMembersBots,
-                                ServerStatsPrefix.CountMembersAll
-                            ]
-                        }
+                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
+                //     where: {
+                //         guild_id: member.guild.id,
+                //         prefix: {
+                //             in: [
+                //                 ServerStatsPrefix.CountMembersUsers,
+                //                 ServerStatsPrefix.CountMembersBots,
+                //                 ServerStatsPrefix.CountMembersAll
+                //             ]
+                //         }
+                //     }
+                // });
+                const findStatusChannel = await GuildServerStats.find({
+                    guild_id: member.guild.id,
+                    prefix: {
+                        in: [
+                            ServerStatsPrefix.CountMembersUsers,
+                            ServerStatsPrefix.CountMembersBots,
+                            ServerStatsPrefix.CountMembersAll
+                        ]
                     }
                 });
 

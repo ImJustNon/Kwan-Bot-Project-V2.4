@@ -3,6 +3,7 @@ import { BotClient } from "../../../classes/Client.class";
 import ReplyEmbed from "../../../utils/ReplyEmbed.util";
 import { ServerStatsPrefix } from "../../../enums/ServerStats.enum";
 import UpdateData from "../../../utils/UpdateData.utils";
+import { GuildServerStats } from "../../../models/GuildServerStats.model";
 
 export default class PresenceUpdate {
     constructor(client: BotClient){
@@ -16,19 +17,30 @@ export default class PresenceUpdate {
             try {
                 await guild.members.fetch();
 
-                const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                    where: {
-                        guild_id: guild.id,
-                        prefix: {
-                            in: [
-                                ServerStatsPrefix.CountMembersOnline,
-                                ServerStatsPrefix.CountMembersDnd,
-                                ServerStatsPrefix.CountMembersIdle,
-                                ServerStatsPrefix.CountMembersOffline
-                            ]
-                        }
+                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
+                //     where: {
+                //         guild_id: guild.id,
+                //         prefix: {
+                //             in: [
+                //                 ServerStatsPrefix.CountMembersOnline,
+                //                 ServerStatsPrefix.CountMembersDnd,
+                //                 ServerStatsPrefix.CountMembersIdle,
+                //                 ServerStatsPrefix.CountMembersOffline
+                //             ]
+                //         }
+                //     }
+                // });
+                const findStatusChannel = await GuildServerStats.find({
+                    guild_id: guild.id,
+                    prefix: {
+                        in: [
+                            ServerStatsPrefix.CountMembersOnline,
+                            ServerStatsPrefix.CountMembersDnd,
+                            ServerStatsPrefix.CountMembersIdle,
+                            ServerStatsPrefix.CountMembersOffline
+                        ]
                     }
-                });
+                })
                 // console.log("Channels to update:", findStatusChannel.length);
 
                 for (const ch of findStatusChannel) {

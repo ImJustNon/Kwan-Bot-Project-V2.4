@@ -3,20 +3,30 @@ import { BotClient } from "../../../classes/Client.class";
 import ReplyEmbed from "../../../utils/ReplyEmbed.util";
 import { ServerStatsPrefix } from "../../../enums/ServerStats.enum";
 import UpdateData from "../../../utils/UpdateData.utils";
+import { GuildServerStats } from "../../../models/GuildServerStats.model";
 
 export default class ChannelCreate {
     constructor(client: BotClient){
         client.on("channelCreate", async(channel: NonThreadGuildBasedChannel) => {
             try {
-                const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                    where: {
-                        guild_id: channel.guild.id,
-                        prefix: {
-                            in: [
-                                ServerStatsPrefix.CountChannelsVoice,
-                                ServerStatsPrefix.CountChannelsText,
-                            ]
-                        }
+                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
+                //     where: {
+                //         guild_id: channel.guild.id,
+                //         prefix: {
+                //             in: [
+                //                 ServerStatsPrefix.CountChannelsVoice,
+                //                 ServerStatsPrefix.CountChannelsText,
+                //             ]
+                //         }
+                //     }
+                // });
+                const findStatusChannel = await GuildServerStats.find({
+                    guild_id: channel.guild.id,
+                    prefix: {
+                        $in: [
+                            ServerStatsPrefix.CountChannelsVoice,
+                            ServerStatsPrefix.CountChannelsText,
+                        ]
                     }
                 });
 
