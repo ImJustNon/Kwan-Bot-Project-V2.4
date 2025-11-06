@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoRoles } from "../../models/GuildAutoRoles.model";
 
 export default class AutoRolesAdd extends Command {
     constructor(client: BotClient) {
@@ -30,11 +31,14 @@ export default class AutoRolesAdd extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            await client.prisma.guildAutoRoles.deleteMany({
-                where: {
-                    guild_id: guild.id,
-                }
-            });
+            await GuildAutoRoles.deleteMany({
+                guild_id: guild.id
+            })
+            // await client.prisma.guildAutoRoles.deleteMany({
+            //     where: {
+            //         guild_id: guild.id,
+            //     }
+            // });
             return await interaction.reply(new ReplyEmbed().success(`รีเซ็ตการตั้งค่าเรียบร้อยเเล้ว`));
         }
         catch(e){

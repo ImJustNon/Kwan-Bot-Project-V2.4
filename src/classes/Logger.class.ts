@@ -4,7 +4,6 @@ const options = {
     disabled: false,
     interactive: false,
     logLevel: 'info',
-    scope: "Kwan's 2 v.2.4.0",
 };
 
 export class Logger extends Signale {

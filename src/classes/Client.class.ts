@@ -1,7 +1,7 @@
 import { ApplicationCommandType, Client, ClientOptions, Collection, PermissionResolvable, PermissionsBitField, REST, Routes } from "discord.js";
 import { Config, config } from "../config/config";
 import { Logger } from "./Logger.class";
-import fs from "fs";
+import fs, { Mode } from "fs";
 import path from "path";
 import { Command } from "./Command.class";
 import { Event } from "./Event.class";
@@ -22,7 +22,7 @@ export class BotClient extends Client {
     logger: Logger;
     body: any[];
     manager: MoonlinkClient;
-    prisma: PrismaClient;
+    // prisma: PrismaClient;
     mongoose: Mongoose;
 
     constructor(options: ClientOptions){
@@ -34,11 +34,11 @@ export class BotClient extends Client {
         this.logger = new Logger();
         this.body = [];
         this.manager = new MoonlinkClient(this);
-        this.prisma = new PrismaClient();
+        // this.prisma = new PrismaClient();
         this.mongoose = mongoose;
     }
 
-    async startLogin(token: string){
+    public async startLogin(token: string){
         this.logger.info(`Connecting... mongodb!`);
         new MongoDB(this);
         this.logger.info(`Loading... commands!`);
@@ -54,7 +54,7 @@ export class BotClient extends Client {
     }
 
 
-    regisCommand(){
+    private regisCommand(){
         this.once("ready", async () => {
             const applicationCommands = Routes.applicationCommands(config.bot.id);
             try {

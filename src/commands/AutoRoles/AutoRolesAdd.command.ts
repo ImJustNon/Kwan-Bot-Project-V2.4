@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoRoles } from "../../models/GuildAutoRoles.model";
 
 export default class AutoRolesAdd extends Command {
     constructor(client: BotClient) {
@@ -41,25 +42,33 @@ export default class AutoRolesAdd extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
-                where: {
-                    guild_id: guild.id
-                },
-                select: {
-                    role_id: true
-                }
+            // const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
+            //     where: {
+            //         guild_id: guild.id
+            //     },
+            //     select: {
+            //         role_id: true
+            //     }
+            // });
+            const findAutoRoles = await GuildAutoRoles.find({
+                guild_id: guild.id,
             });
 
             if(findAutoRoles.filter(r => r.role_id === selectedRole.id).length !== 0) return await interaction.reply(new ReplyEmbed().warn("Role นี้ได้ถูกตั้งค่าเป็น Auto Role ไว้เเล้วนะคะ"));
 
             if(findAutoRoles.length >= 5) return await interaction.reply(new ReplyEmbed().warn(`สามารถตั้งค่าได้สูงสุด 5 ยศเท่านั้นนะคะ`));
 
-            await client.prisma.guildAutoRoles.create({
-                data: {
-                    guild_id: guild.id,
-                    role_id: selectedRole.id,
-                    creator_user_id: member.id
-                }
+            // await client.prisma.guildAutoRoles.create({
+            //     data: {
+            //         guild_id: guild.id,
+            //         role_id: selectedRole.id,
+            //         creator_user_id: member.id
+            //     }
+            // });
+            await GuildAutoRoles.create({
+                guild_id: guild.id,
+                role_id: selectedRole.id,
+                author_id: member.id
             });
 
             await interaction.reply(new ReplyEmbed().success(`ทำการเพิ่มยศ <@&${selectedRole.id}> เรียบร้อยเล้วค่ะ`));

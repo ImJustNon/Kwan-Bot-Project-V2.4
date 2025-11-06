@@ -13,7 +13,6 @@ export class MoonlinkClient extends Manager {
             },
             options: {
                 NodeLinkFeatures: true,
-                previousInArray: true,
                 logFile: {
                     log: true,
                     path: "moonlink.log",

@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
 import axios from "axios";
 import ReplyEmbed from "../../utils/ReplyEmbed.util";
+import { GuildAutoRoles } from "../../models/GuildAutoRoles.model";
 
 export default class AutoRolesAdd extends Command {
     constructor(client: BotClient) {
@@ -41,24 +42,32 @@ export default class AutoRolesAdd extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            const findAutoRoles = await client.prisma.guildAutoRoles.findUnique({
-                where: {
-                    guild_id: guild.id,
-                    role_id: selectedRole.id
-                },
-                select: {
-                    role_id: true
-                }
-            });
+            // const findAutoRoles = await client.prisma.guildAutoRoles.findUnique({
+            //     where: {
+            //         guild_id: guild.id,
+            //         role_id: selectedRole.id
+            //     },
+            //     select: {
+            //         role_id: true
+            //     }
+            // });
+            const findAutoRoles = await GuildAutoRoles.find({
+                guild_id: guild.id,
+                role_id: selectedRole.id
+            })
 
             if(!findAutoRoles) return await interaction.reply(new ReplyEmbed().warn("Role นี้ยังไม่ได้ถูกตั้งค่าเป็น Auto Role นะคะ"));
 
 
-            await client.prisma.guildAutoRoles.delete({
-                where: {
-                    guild_id: guild.id,
-                    role_id: selectedRole.id
-                }
+            // await client.prisma.guildAutoRoles.delete({
+            //     where: {
+            //         guild_id: guild.id,
+            //         role_id: selectedRole.id
+            //     }
+            // });
+            await GuildAutoRoles.deleteOne({
+                guild_id: guild.id,
+                role_id: selectedRole.id
             });
 
             await interaction.reply(new ReplyEmbed().success(`ทำการนำยศ <@&${selectedRole.id}> ออกเรียบร้อยเล้วค่ะ`));
