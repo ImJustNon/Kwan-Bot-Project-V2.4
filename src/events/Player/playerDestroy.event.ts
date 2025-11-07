@@ -29,19 +29,6 @@ export default class PlayerDestroy extends Event {
 
         // then check from db
         try {
-            // const findMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
-            //     where: {
-            //         guild_id: player.guildId,
-            //         channel_id: player.textChannelId
-            //     },
-            //     select: {
-            //         content_banner_id: true,
-            //         content_queue_id: true,
-            //         content_playing_id: true,
-            //         webhook_id: true,
-            //         webhook_token: true,
-            //     }
-            // });
             const findMusicChannel = await GuildMusicChannel.findOne({
                 guild_id: player.guildId,
                 channel_id: player.textChannelId

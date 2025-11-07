@@ -53,12 +53,7 @@ export default class ServerStatsRemove extends Command {
         try {
             if(confirm !== "confirm") return await interaction.reply(new ReplyEmbed().warn("หากต้องการลบการตั้งค่าให้พิมพ์ \`confirm\` เท่านั้นนะคะ"));
 
-            // const findChannel = await client.prisma.guildServerStats.findUnique({
-            //     where: {
-            //         guild_id: guild.id,
-            //         channel_id: selectedChannel.id
-            //     }
-            // });
+
             const findChannel = await GuildServerStats.findOne({
                 guild_id: guild.id,
                 channel_id: selectedChannel.id
@@ -69,12 +64,7 @@ export default class ServerStatsRemove extends Command {
             const ch = guild.channels.cache.get(selectedChannel.id);
             if(ch) ch.delete().catch((e) => {});
 
-            // await client.prisma.guildServerStats.delete({
-            //     where: {
-            //         guild_id: guild.id,
-            //         channel_id: selectedChannel.id,
-            //     }
-            // });
+
             await GuildServerStats.deleteOne({
                 guild_id: guild.id,
                 channel_id: selectedChannel.id

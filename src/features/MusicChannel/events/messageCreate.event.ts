@@ -17,19 +17,6 @@ export default class MessageCreate {
             if(!textChannel.name.includes("music") && !textChannel.name.includes(`${client.user?.username}-music`) && !textChannel.name.includes(`${client.user?.username}`)) return;
     
             // then check from database
-            // const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
-            //     where: {
-            //         guild_id: message.guild.id,
-            //         channel_id: message.channel.id
-            //     },
-            //     select: {
-            //         content_banner_id: true,
-            //         content_playing_id: true,
-            //         content_queue_id: true,
-            //         webhook_id: true,
-            //         webhook_token: true,
-            //     }
-            // });
             const findMusicChannel = await GuildMusicChannel.findOne({
                 guild_id: message.guild.id,
                 channel_id: message.channel.id

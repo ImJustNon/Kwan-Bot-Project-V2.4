@@ -31,15 +31,6 @@ export default class AutoRolesAdd extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            // const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
-            //     where: {
-            //         guild_id: guild.id
-            //     },
-            //     select: {
-            //         role_id: true,
-            //         creator_user_id: true
-            //     }
-            // });
             const findAutoRoles = await GuildAutoRoles.find({
                 guild_id: guild.id
             });

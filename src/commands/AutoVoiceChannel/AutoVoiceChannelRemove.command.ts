@@ -49,12 +49,6 @@ export default class AutoVoiceChannelAdd extends Command {
 
 
         try {
-            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findUnique({
-            //     where: {
-            //         guild_id: guild.id,
-            //         channel_id: voiceChannel.id
-            //     }
-            // });
             const findVoiceChannel = await GuildAutoVoiceChannel.findOne({
                 guild_id: guild.id,
                 channel_id: voiceChannel.id
@@ -65,12 +59,6 @@ export default class AutoVoiceChannelAdd extends Command {
             }
 
             // delete data
-            // await client.prisma.guildAutoVoiceChannel.delete({
-            //     where: {
-            //         guild_id: guild.id,
-            //         channel_id: voiceChannel.id,
-            //     }
-            // });
             await GuildAutoVoiceChannel.deleteOne({
                 guild_id: guild.id,
                 channel_id: voiceChannel.id

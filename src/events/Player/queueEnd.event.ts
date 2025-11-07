@@ -17,12 +17,7 @@ export default class QueueEnd extends Event {
         const channel: TextChannel = this.client.channels.cache.get(player.textChannelId) as TextChannel;
         // const guild: Guild = client.guilds.cache.get(player.guildId) as Guild;
         try {
-            // const isMusicChannel = await this.client.prisma.guildMusicChannel.findUnique({
-            //     where: {
-            //         guild_id: player.guildId,
-            //         channel_id: player.textChannelId
-            //     },
-            // });
+
             const isMusicChannel = await GuildMusicChannel.findOne({
                 guild_id: player.guildId,
                 channel_id: player.textChannelId,

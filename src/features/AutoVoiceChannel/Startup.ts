@@ -7,7 +7,6 @@ export default class AutoVoiceChannelStartup {
         new Promise(async resolve =>{
             setTimeout(async() => {
                 try {
-                    // const findAllAutoVCCache = await client.prisma.cacheAutoVoiceChannel.findMany();
                     const findAllAutoVCCache = await CacheAutoVoiceChannel.find();
                     
                     for(const vc of findAllAutoVCCache){
@@ -15,11 +14,6 @@ export default class AutoVoiceChannelStartup {
                         if(!guild) { 
                             // if guild not found then delete all guild cache data and skip
 
-                            // await client.prisma.cacheAutoVoiceChannel.deleteMany({
-                            //     where: {
-                            //         guild_id: vc.guild_id
-                            //     }
-                            // });
                             await CacheAutoVoiceChannel.deleteMany({
                                 guild_id: vc.guild_id
                             });
@@ -28,12 +22,6 @@ export default class AutoVoiceChannelStartup {
 
                         const voiceChannel: GuildBasedChannel | undefined = guild.channels.cache.get(vc.channel_id);
                         if(!voiceChannel){
-                            // await client.prisma.cacheAutoVoiceChannel.delete({
-                            //     where: {
-                            //         guild_id: vc.guild_id,
-                            //         channel_id: vc.channel_id
-                            //     }
-                            // });
                             await CacheAutoVoiceChannel.deleteOne({
                                 guild_id: vc.guild_id,
                                 channel_id: vc.channel_id
@@ -43,12 +31,6 @@ export default class AutoVoiceChannelStartup {
                         
                         if(voiceChannel.type === ChannelType.GuildVoice){
                             if((voiceChannel as VoiceBasedChannel).members.size < 1){
-                                // await client.prisma.cacheAutoVoiceChannel.delete({
-                                //     where: {
-                                //         guild_id: vc.guild_id,
-                                //         channel_id: vc.channel_id
-                                //     }
-                                // });
                                 await CacheAutoVoiceChannel.deleteOne({
                                     guild_id: vc.guild_id,
                                     channel_id: vc.channel_id

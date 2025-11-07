@@ -26,15 +26,6 @@ export default class MusicChannelSetup extends Command {
 
     async callback(client: BotClient, interaction: CommandInteraction): Promise<any> {
         try {
-            // const findMusicChannel = await client.prisma.guildMusicChannel.findUnique({
-            //     where: {
-            //         guild_id: interaction.guild?.id,
-            //     },
-            //     select: {
-            //         channel_id: true,
-            //         webhook_id: true
-            //     }
-            // });
             const findMusicChannel = await GuildMusicChannel.findOne({
                 guild_id: interaction.guild?.id
             });
@@ -86,11 +77,6 @@ export default class MusicChannelSetup extends Command {
                         await musicChannel.delete().catch((): void => {});
                     }
                     // Delete From DB
-                    // await client.prisma.guildMusicChannel.delete({
-                    //     where: {
-                    //         guild_id: interaction.guild?.id
-                    //     }
-                    // });
                     await GuildMusicChannel.deleteOne({
                         guild_id: interaction.guild?.id
                     });

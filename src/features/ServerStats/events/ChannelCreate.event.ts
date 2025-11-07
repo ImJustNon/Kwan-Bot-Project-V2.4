@@ -9,17 +9,6 @@ export default class ChannelCreate {
     constructor(client: BotClient){
         client.on("channelCreate", async(channel: NonThreadGuildBasedChannel) => {
             try {
-                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                //     where: {
-                //         guild_id: channel.guild.id,
-                //         prefix: {
-                //             in: [
-                //                 ServerStatsPrefix.CountChannelsVoice,
-                //                 ServerStatsPrefix.CountChannelsText,
-                //             ]
-                //         }
-                //     }
-                // });
                 const findStatusChannel = await GuildServerStats.find({
                     guild_id: channel.guild.id,
                     prefix: {

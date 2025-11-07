@@ -49,11 +49,6 @@ export default class CommandChannelEnable extends Command {
 
 
         try {
-            // const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
-            //     where: {
-            //         guild_id: guild.id
-            //     }
-            // });
             const findCommandChannel = await GuildCommandChannel.findOne({
                 guild_id: guild.id
             });
@@ -63,13 +58,6 @@ export default class CommandChannelEnable extends Command {
             }
 
             // insert data
-            // await client.prisma.guildCommandChannel.create({
-            //     data: {
-            //         guild_id: guild.id,
-            //         channel_id: textChannel.id,
-            //         creator_user_id: member.id
-            //     }
-            // });
             await GuildCommandChannel.create({
                 guild_id: guild.id,
                 channel_id: textChannel.id,

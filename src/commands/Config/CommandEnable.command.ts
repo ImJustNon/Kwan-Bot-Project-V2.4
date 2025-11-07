@@ -45,24 +45,12 @@ export default class CommandEnable extends Command {
         
 
         try {
-            // const findCommand = await client.prisma.guildDisabledCommand.findMany({
-            //     where: {
-            //         guild_id: guild.id,
-            //         command_name: commandName!,
-            //     }
-            // });
             const findCommand = await GuildDisabledCommand.find({
                 guild_id: guild.id,
                 command_name: commandName!
             });
             if(findCommand.length === 0) return await interaction.reply(new ReplyEmbed().warn(`คำสั่ง /${commandName} ได้ถูกตั้งค่าเปิดใช่งานไว้อยู่เเล้วนะคะ`));
 
-            // await client.prisma.guildDisabledCommand.deleteMany({
-            //     where: {
-            //         guild_id: guild.id,
-            //         command_name: commandName!,
-            //     }
-            // });
             await GuildDisabledCommand.deleteMany({
                 guild_id: guild.id,
                 command_name: commandName!
