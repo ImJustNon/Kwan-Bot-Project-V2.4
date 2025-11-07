@@ -17,19 +17,6 @@ export default class PresenceUpdate {
             try {
                 await guild.members.fetch();
 
-                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                //     where: {
-                //         guild_id: guild.id,
-                //         prefix: {
-                //             in: [
-                //                 ServerStatsPrefix.CountMembersOnline,
-                //                 ServerStatsPrefix.CountMembersDnd,
-                //                 ServerStatsPrefix.CountMembersIdle,
-                //                 ServerStatsPrefix.CountMembersOffline
-                //             ]
-                //         }
-                //     }
-                // });
                 const findStatusChannel = await GuildServerStats.find({
                     guild_id: guild.id,
                     prefix: {

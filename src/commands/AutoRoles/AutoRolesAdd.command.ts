@@ -42,14 +42,6 @@ export default class AutoRolesAdd extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            // const findAutoRoles = await client.prisma.guildAutoRoles.findMany({
-            //     where: {
-            //         guild_id: guild.id
-            //     },
-            //     select: {
-            //         role_id: true
-            //     }
-            // });
             const findAutoRoles = await GuildAutoRoles.find({
                 guild_id: guild.id,
             });
@@ -58,13 +50,6 @@ export default class AutoRolesAdd extends Command {
 
             if(findAutoRoles.length >= 5) return await interaction.reply(new ReplyEmbed().warn(`สามารถตั้งค่าได้สูงสุด 5 ยศเท่านั้นนะคะ`));
 
-            // await client.prisma.guildAutoRoles.create({
-            //     data: {
-            //         guild_id: guild.id,
-            //         role_id: selectedRole.id,
-            //         creator_user_id: member.id
-            //     }
-            // });
             await GuildAutoRoles.create({
                 guild_id: guild.id,
                 role_id: selectedRole.id,

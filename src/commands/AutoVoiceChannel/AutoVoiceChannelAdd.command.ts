@@ -49,11 +49,6 @@ export default class AutoVoiceChannelAdd extends Command {
 
 
         try {
-            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
-            //     where: {
-            //         guild_id: guild.id
-            //     }
-            // });
             const findVoiceChannel = await GuildAutoVoiceChannel.find({
                 guild_id: guild.id
             });
@@ -65,13 +60,6 @@ export default class AutoVoiceChannelAdd extends Command {
             if(findVoiceChannel.length >= 5) return await interaction.reply(new ReplyEmbed().warn("เซิฟเวอร์นี้ได้ทำการตั้งค่าถึงสูงสุดเเล้ว โปรดลบช่องเก่าที่ไม่ได้ใช้ก่อนทำการตั้งค่าใหม่น่ะ"));
 
             // insert data
-            // await client.prisma.guildAutoVoiceChannel.create({
-            //     data: {
-            //         guild_id: guild.id,
-            //         channel_id: voiceChannel.id,
-            //         creator_user_id: member.id
-            //     }
-            // });
             await GuildAutoVoiceChannel.create({
                 guild_id: guild.id,
                 channel_id: voiceChannel.id,

@@ -31,11 +31,6 @@ export default class AutoVoiceChannelReset extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            // await client.prisma.guildAutoVoiceChannel.deleteMany({
-            //     where: {
-            //         guild_id: guild.id,
-            //     }
-            // });
             await GuildAutoVoiceChannel.deleteMany({
                 guild_id: guild.id
             });

@@ -46,12 +46,6 @@ export default class CommandDisable extends Command {
         
         
         try {
-            // const findDuplicate = await client.prisma.guildDisabledCommand.findMany({
-            //     where: {
-            //         guild_id: guild.id,
-            //         command_name: commandName!,
-            //     }
-            // });
             const findDuplicate = await GuildDisabledCommand.find({
                 guild_id: guild.id,
                 command_name: commandName!
@@ -59,13 +53,6 @@ export default class CommandDisable extends Command {
 
             if(findDuplicate.length !== 0) return await interaction.reply(new ReplyEmbed().warn(`คำสั่ง /${commandName} ได้ถูกตั้งค่าปิดใช่งานไว้เเล้วนะคะ`));
 
-            // await client.prisma.guildDisabledCommand.create({
-            //     data: {
-            //         guild_id: guild.id,
-            //         command_name: commandName!,
-            //         creator_user_id: member.id
-            //     }
-            // });
             await GuildDisabledCommand.create({
                 guild_id: guild.id,
                 command_name: commandName,

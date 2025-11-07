@@ -31,11 +31,6 @@ export default class AutoVoiceChannelAdd extends Command {
         if(!guild) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล Guild ที่อยู่ตอนนี้"));
 
         try {
-            // const findVoiceChannel = await client.prisma.guildAutoVoiceChannel.findMany({
-            //     where: {
-            //         guild_id: guild.id
-            //     }
-            // });
             const findVoiceChannel = await GuildAutoVoiceChannel.find({
                 guild_id: guild.id
             });

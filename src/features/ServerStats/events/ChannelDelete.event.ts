@@ -13,17 +13,6 @@ export default class ChannelDelete {
             // console.log(channel.guild);
 
             try {
-                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                //     where: {
-                //         guild_id: channel.guild.id,
-                //         prefix: {
-                //             in: [
-                //                 ServerStatsPrefix.CountChannelsVoice,
-                //                 ServerStatsPrefix.CountChannelsText,
-                //             ]
-                //         }
-                //     }
-                // });
                 const findStatusChannel = await GuildServerStats.find({
                     guild_id: channel.guild.id,
                     prefix: {

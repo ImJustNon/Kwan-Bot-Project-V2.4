@@ -37,15 +37,6 @@ export default class CommandDisableList extends Command {
 
         
         try {
-            // const findDisabledCommands = await client.prisma.guildDisabledCommand.findMany({
-            //     where: {
-            //         guild_id: guild.id
-            //     },
-            //     select: {
-            //         command_name: true,
-            //         creator_user_id: true
-            //     }
-            // });
             const findDisabledCommands = await GuildDisabledCommand.find({
                 guild_id: guild.id
             });

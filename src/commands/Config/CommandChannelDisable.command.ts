@@ -32,11 +32,6 @@ export default class CommandChannelDisable extends Command {
 
 
         try {
-            // const findCommandChannel = await client.prisma.guildCommandChannel.findUnique({
-            //     where: {
-            //         guild_id: guild.id
-            //     },
-            // });
             const findCommandChannel = await GuildCommandChannel.findOne({
                 guild_id: guild.id
             });
@@ -46,11 +41,6 @@ export default class CommandChannelDisable extends Command {
             }
 
             // insert data
-            // await client.prisma.guildCommandChannel.delete({
-            //     where: {
-            //         guild_id: guild.id,
-            //     }
-            // });
             await GuildCommandChannel.deleteOne({
                 guild_id: guild.id
             });

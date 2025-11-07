@@ -42,15 +42,7 @@ export default class AutoRolesAdd extends Command {
         if(!member) return await interaction.reply(new ReplyEmbed().error("ไม่พบข้อมูล User ที่ใช้อยู่ตอนนี้"));
         
         try {
-            // const findAutoRoles = await client.prisma.guildAutoRoles.findUnique({
-            //     where: {
-            //         guild_id: guild.id,
-            //         role_id: selectedRole.id
-            //     },
-            //     select: {
-            //         role_id: true
-            //     }
-            // });
+
             const findAutoRoles = await GuildAutoRoles.find({
                 guild_id: guild.id,
                 role_id: selectedRole.id
@@ -59,12 +51,6 @@ export default class AutoRolesAdd extends Command {
             if(!findAutoRoles) return await interaction.reply(new ReplyEmbed().warn("Role นี้ยังไม่ได้ถูกตั้งค่าเป็น Auto Role นะคะ"));
 
 
-            // await client.prisma.guildAutoRoles.delete({
-            //     where: {
-            //         guild_id: guild.id,
-            //         role_id: selectedRole.id
-            //     }
-            // });
             await GuildAutoRoles.deleteOne({
                 guild_id: guild.id,
                 role_id: selectedRole.id

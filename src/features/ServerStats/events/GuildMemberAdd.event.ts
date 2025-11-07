@@ -9,18 +9,6 @@ export default class GuildMemberAdd {
     constructor(client: BotClient){
         client.on("guildMemberAdd", async(member: GuildMember) => {
             try {
-                // const findStatusChannel = await client.prisma.guildServerStats.findMany({
-                //     where: {
-                //         guild_id: member.guild.id,
-                //         prefix: {
-                //             in: [
-                //                 ServerStatsPrefix.CountMembersUsers,
-                //                 ServerStatsPrefix.CountMembersBots,
-                //                 ServerStatsPrefix.CountMembersAll
-                //             ]
-                //         }
-                //     }
-                // });
                 const findStatusChannel = await GuildServerStats.find({
                     guild_id: member.guild.id,
                     prefix: {

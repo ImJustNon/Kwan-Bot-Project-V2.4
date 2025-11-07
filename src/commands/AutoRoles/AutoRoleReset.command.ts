@@ -34,11 +34,7 @@ export default class AutoRolesAdd extends Command {
             await GuildAutoRoles.deleteMany({
                 guild_id: guild.id
             })
-            // await client.prisma.guildAutoRoles.deleteMany({
-            //     where: {
-            //         guild_id: guild.id,
-            //     }
-            // });
+
             return await interaction.reply(new ReplyEmbed().success(`รีเซ็ตการตั้งค่าเรียบร้อยเเล้ว`));
         }
         catch(e){
