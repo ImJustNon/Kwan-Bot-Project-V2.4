@@ -99,12 +99,24 @@ plugins:
       - 'ytsearch:"%ISRC%"'
       - "ytsearch:%QUERY%"
     sources:
-      spotify: false
+      spotify: true
       applemusic: false
       deezer: false
       yandexmusic: false
       flowerytts: false
       youtube: true
+    spotify:
+      # clientId & clientSecret are required for using spsearch
+      clientId: ""
+      clientSecret: ""
+      spDc: "" # the sp dc cookie used for accessing the spotify lyrics api
+      countryCode: "US" # the country code you want to use for filtering the artists top tracks. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      playlistLoadLimit: 6 # The number of pages at 100 tracks each
+      albumLoadLimit: 6 # The number of pages at 50 tracks each
+      resolveArtistsInSearch: true # Whether to resolve artists in track search results (can be slow)
+      localFiles: false # Enable local files support with Spotify playlists. Please note `uri` & `isrc` will be `null` & `identifier` will be `"local"`
+      preferAnonymousToken: false # Whether to use the anonymous token for resolving tracks, artists and albums. Spotify generated playlists are always resolved with the anonymous tokens since they do not work otherwise. This requires the customTokenEndpoint to be set.
+      customTokenEndpoint: "http://localhost:8080/api/token" # Optional custom endpoint for getting the anonymous token. If not set, spotify's default endpoint will be used which might not work. The response must match spotify's anonymous token response format.
   dunctebot:
     ttsLanguage: "en-AU"
     sources:

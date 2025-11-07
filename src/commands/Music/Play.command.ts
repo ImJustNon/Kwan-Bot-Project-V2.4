@@ -77,7 +77,7 @@ export default class Play extends Command {
 
         const searchResult: SearchResult = await client.manager.search({ 
             query: query, 
-            // source: source ?? "ytsearch",
+            source: source ?? "ytsearch",
             requester: interaction.user.id 
         });
 

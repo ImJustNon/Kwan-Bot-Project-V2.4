@@ -85,6 +85,13 @@ export const config: Config = {
             password: "youshallnotpass",
             secure: false
         }
+        // {
+        //     identifier: "Container",
+        //     host: "0.0.0.0",
+        //     port: 3000,
+        //     password: "youshallnotpass",
+        //     secure: false
+        // }
     ],
     assets: {
         ...assets
