@@ -44,22 +44,22 @@ export default class CaptchaConfig extends Command {
             .addFields([
                 {
                     name: `:gear: เพิ่มยศอัตโนมัติ :`,
-                    value: findCapchaSetup.role_new_id,
-                    inline: false,
+                    value: `<@&${findCapchaSetup.role_new_id}>`,
+                    inline: true,
                 },
                 {
                     name: `:gear: นำยศออกอัตโนมัติ :`,
-                    value: findCapchaSetup.role_old_id ? `@${findCapchaSetup.role_old_id}` : '\❌ ยังไม่ได้ตั้งค่า',
-                    inline: false,
+                    value: findCapchaSetup.role_old_id ? `<@&${findCapchaSetup.role_old_id}>` : '\❌ ยังไม่ได้ตั้งค่า',
+                    inline: true,
                 },
                 {
                     name: `:gear: เวลายืนยัน :`,
-                    value: String(findCapchaSetup.timeout),
-                    inline: false,
+                    value: `\`${String(findCapchaSetup.timeout / 1000)}\` วินาที`,
+                    inline: true,
                 },
                 {
                     name: `:gear: ผู้ตั้งค่า :`,
-                    value: `@${findCapchaSetup.author_id}`,
+                    value: `<@${findCapchaSetup.author_id}>`,
                     inline: false,
                 }
             ])
