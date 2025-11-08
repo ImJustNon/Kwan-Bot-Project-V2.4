@@ -34,7 +34,7 @@ export default class CaptchaDisable extends Command {
         });
     }
     async callback(client: BotClient, interaction: ChatInputCommandInteraction): Promise<any>{
-        const isConfirm = interaction.options.getBoolean('verified-role')!;
+        const isConfirm = interaction.options.getBoolean('confirm')!;
 
 
         if(!isConfirm){
