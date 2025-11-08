@@ -1,4 +1,4 @@
-import { ApplicationCommandOption, CommandInteraction, Interaction, PermissionResolvable, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "discord.js";
+import { ApplicationCommandOption, ApplicationCommandSubCommand, CommandInteraction, Interaction, PermissionResolvable, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "discord.js";
 import { BotClient } from "./Client.class";
 
 type CommandOptions = {
