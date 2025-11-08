@@ -39,6 +39,8 @@ const client: BotClient = new BotClient({
 
 
 
+
+
 if(fs.existsSync(path.join(__dirname, "./utils/Logo.txt"))){
     try {
         const logFileData = fs.readFileSync(path.join(__dirname, "./utils/Logo.txt"), {
