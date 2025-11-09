@@ -1,10 +1,13 @@
 import { ClientEvents } from "discord.js";
 import { BotClient } from "../../../classes/Client.class";
+import { GuildLoggingChannel } from "../../../models/GuildLoggingChannel.model";
 
-export abstract class Event {
+export class Event {
     constructor(client: BotClient, event: keyof ClientEvents) {
         client.on(event, (...args) => this.callback(...args));
     }
 
-    abstract callback(...args: any[]): Promise<void>;
+    async callback(...args: any[]): Promise<void>{
+        return await Promise.resolve();
+    }
 }
