@@ -1,4 +1,4 @@
-import { ApplicationCommandOption, CommandInteraction, Interaction, PermissionResolvable, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "discord.js";
+import { ApplicationCommandOption, ChatInputCommandInteraction, CommandInteraction, Interaction, PermissionResolvable, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "discord.js";
 import { BotClient } from "./Client.class";
 
 type CommandOptions = {
@@ -55,7 +55,7 @@ export abstract class Command {
         this.category = options.category || "general";
     }
 
-    async callback(_client: BotClient, _interaction: CommandInteraction) {
+    async callback(_client: BotClient, _interaction: CommandInteraction | ChatInputCommandInteraction) {
         return await Promise.resolve();
     }
 }

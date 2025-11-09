@@ -3,22 +3,15 @@ import { BotClient } from "../classes/Client.class";
 import { Player } from "moonlink.js";
 import MusicChannelMessage from "./MusicChannelMessage.util";
 import MusicChannelDefaultMessage from "./MusicChannelDefaultMessage.util";
+import { WebhookMessage } from "./WebhookMessage.util";
 
-export default class MusicChannelWebhook {
-    private webhookId: string;
-    private webhookToken: string;
-    private webhookClient: WebhookClient;
+export default class MusicChannelWebhook extends WebhookMessage {
 
     constructor(webhookId: string, webhookToken: string){
-        this.webhookId = webhookId;
-        this.webhookToken = webhookToken;
-        this.webhookClient = new WebhookClient({
-            id: webhookId,
-            token: webhookToken
-        });
+        super(webhookId, webhookToken);
     }
 
-    async editEmbedTrack(client: BotClient, player: Player, messageId: string){
+    public async editEmbedTrack(client: BotClient, player: Player, messageId: string){
         await this.webhookClient.editMessage(messageId, {
             embeds: [
                 new MusicChannelMessage(client, player).createTrackEmbedMessage(),
@@ -26,7 +19,7 @@ export default class MusicChannelWebhook {
         });
     }
 
-    async editEmbedDefault(messageId: string){
+    public async editEmbedDefault(messageId: string){
         await this.webhookClient.editMessage(messageId, {
             embeds: [
                 new MusicChannelDefaultMessage().defaultTrackEmbedMessage(),
@@ -34,31 +27,15 @@ export default class MusicChannelWebhook {
         });
     }
 
-    async editQueueTrack(client: BotClient, player: Player, messageId: string){
+    public async editQueueTrack(client: BotClient, player: Player, messageId: string){
         await this.webhookClient.editMessage(messageId, {
             content: new MusicChannelMessage(client, player).createQueueMessage(),            
         });
     }
 
-    async editQueueDefault(messageId: string){
+    public async editQueueDefault(messageId: string){
         await this.webhookClient.editMessage(messageId, {
             content: new MusicChannelDefaultMessage().defaultQueueMessage(),            
         });
-    }
-
-    async sendThenDelete(options: WebhookMessageCreateOptions){
-        await this.webhookClient.send(options).then((msg) => {
-            setTimeout(async(): Promise<void> =>{
-                await this.webhookClient.deleteMessage(msg.id).catch(() => {});
-            }, 5000);
-        }).catch(() => {});
-    }
-
-    async send(options: WebhookMessageCreateOptions){
-        await this.webhookClient.send(options).catch(() => {});
-    }
-
-    async delete(){
-        await this.webhookClient.delete();
     }
 }
