@@ -1,4 +1,4 @@
-import { ActionRowBuilder, AnyComponentBuilder, APIEmbedField, APIMessageComponentEmoji, APISelectMenuOption, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, ChannelType, ChatInputCommandInteraction, Collection, CommandInteraction, ComponentType, EmbedBuilder, Guild, GuildMember, Interaction, InteractionCallbackResponse, InteractionResponse, MessageFlags, RestOrArray, SlashCommandStringOption, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
+import { ActionRowBuilder, AnyComponentBuilder, APIEmbedField, APIMessageComponentEmoji, APISelectMenuOption, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, ChannelType, ChatInputCommandInteraction, Collection, ColorResolvable, CommandInteraction, ComponentType, EmbedBuilder, Guild, GuildMember, Interaction, InteractionCallbackResponse, InteractionResponse, MessageFlags, RestOrArray, SlashCommandStringOption, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
 import { BotClient } from "../../classes/Client.class";
 import { Command } from "../../classes/Command.class";
 import { config } from "../../config/config";
@@ -63,7 +63,7 @@ export default class CaptchaSetup extends Command {
 
         
         const embed = new EmbedBuilder()
-            .setColor('#e1ff00ff')
+            .setColor('Yellow')
             .setTitle(`หากต้องการจะตั้งค่าระบบยืนยันตัวตนให้กด \`ยืนยัน\` \nหากต้องการยกเลิกให้กด \`ยกเลิก\``)
             .setFooter({text: "Kwan's 💕 2"})
             .setTimestamp();
