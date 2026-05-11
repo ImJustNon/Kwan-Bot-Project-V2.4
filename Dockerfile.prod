@@ -3,17 +3,29 @@ FROM node:22-bullseye AS builder
 
 WORKDIR /app
 
-# Copy only package files first (for caching)
-COPY package.json ./
+# Native deps for canvas/skia-canvas
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    librsvg2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install pnpm globally and dependencies (including dev)
-RUN npm install -g pnpm && pnpm install
+# Copy package files
+COPY package*.json ./
 
-# Copy all project files
+# Install dependencies
+RUN npm install
+
+# Copy source
 COPY . .
 
-# Build TypeScript
-RUN pnpm run build
+# Build
+RUN npm run build
 
 
 # ---------- Stage 2: Production ----------
@@ -21,14 +33,22 @@ FROM node:22-bullseye AS runner
 
 WORKDIR /app
 
-# Copy only built files and production dependencies
-COPY package.json ./
-RUN npm install -g pnpm && pnpm install --prod
+# Runtime libs
+RUN apt-get update && apt-get install -y \
+    libcairo2 \
+    libpango-1.0-0 \
+    libjpeg62-turbo \
+    libgif7 \
+    librsvg2-2 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy compiled JS from builder
+# Copy package files
+COPY package*.json ./
+
+# Install production deps
+RUN npm install --omit=dev
+
+# Copy build
 COPY --from=builder /app/build ./build
-
-# Copy env file if needed (optional)
-# COPY .env .env
 
 CMD ["node", "./build/src/index.js"]
